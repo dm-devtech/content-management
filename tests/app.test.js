@@ -1,33 +1,41 @@
 import app from '../index' // Link to your server file
 import request from 'supertest'
+const pool = require("../database")
 
+afterAll(done => {
+  pool.query('TRUNCATE posts RESTART IDENTITY CASCADE;', (err, res) => {
+  pool.end().then(done());
+  })
+})
 
 describe('testing POST /content/add', () => {
   it('testing adding content successfully', async done => {
     const response = await request(app).post("/content/add").send({
-      title: "test title",
-      content: "test content"
+      title: "adding content status check TITLE",
+      content: "adding content status check CONTENT"
     })
     expect(response.statusCode).toBe(200)
     done()
   })
 
-  it('testing when no content given', async done => {
+  it('testing header content type is json', async done => {
     const response = await request(app).post("/content/add").send({
-      title: "test title",
-      content: "test content"
+      title: "adding content header content JSON TITLE",
+      content: "adding content header content JSON CONTENT"
     })
     expect(response.headers['content-type']).toEqual(expect.stringContaining("json"))
     done()
   })
 
-  it('testing when no content given', async done => {
+  it('testing content is correct', async done => {
     const response = await request(app).post("/content/add").send({
       title: "test title",
       content: "test content"
     })
-    console.log(response.body)
-    expect(response.body).tobeDefined
+
+    expect(response.body.content_id).toEqual(3)
+    expect(response.body.title).toEqual('test title')
+    expect(response.body.content).toEqual('test content')
     done()
   })
 
