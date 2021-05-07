@@ -2,13 +2,14 @@ import app from '../index' // Link to your server file
 import request from 'supertest'
 const pool = require("../database")
 
-afterAll(done => {
-  pool.query('TRUNCATE posts RESTART IDENTITY CASCADE;', (err, res) => {
-  pool.end().then(done());
-  })
-})
-
 describe('testing POST /content/add', () => {
+
+  afterAll(done => {
+    pool.query('TRUNCATE posts RESTART IDENTITY CASCADE;', (err, res) => {
+    pool.end().then(done());
+    })
+  })
+
   it('testing adding content successfully', async done => {
     const response = await request(app).post("/content/add").send({
       title: "adding content status check TITLE",
