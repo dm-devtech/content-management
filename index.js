@@ -59,7 +59,7 @@ app.put("/content/:id", async (req,res) => {
 app.delete("/content/:id", async (req,res) => {
   try {
     const {id} = req.params;
-    const deleteContent = await pool.query("DELETE FROM post WHERE content_id = $1", [id])
+    const deleteContent = await pool.query("DELETE FROM posts WHERE content_id = $1", [id])
 
     res.json("Content was deleted")
 

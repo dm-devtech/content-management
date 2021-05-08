@@ -65,5 +65,30 @@ describe('testing updating record with PUT /content/:id', () => {
     expect(getUpdatedRecord.body.content).toEqual('test content (testing update record) UPDATED')
     done()
   })
+})
 
+describe('testing deleting record with DELETE /content/:id', () => {
+  afterAll(done => {
+    pool.query('TRUNCATE posts RESTART IDENTITY CASCADE;', (err, res) => {
+    })
+  })
+
+  it('testing deleting content successfully', async done => {
+    const addRecord = await request(app).post("/content/add").send({
+      title: "test title (testing deleting a record)",
+      content: "test content (testing deleting a record)"
+    }) // creating record
+    const deleteRecord = await request(app).delete("/content/1") // delete record
+    const getDeletedRecord = await request(app).get("/content/1") // get updated record
+
+    expect(addRecord.body.content_id).toEqual(1) // testing added record Id
+    expect(addRecord.statusCode).toBe(200)
+    expect(deleteRecord.statusCode).toBe(200)
+    expect(deleteRecord.text).toContain("Content was deleted")
+    expect(getDeletedRecord.statusCode).toBe(200)
+    expect(getDeletedRecord.body.content_id).toBeUndefined()
+    expect(getDeletedRecord.body.title).toBeUndefined()
+    expect(getDeletedRecord.body.content).toBeUndefined()
+    done()
+  })
 })
