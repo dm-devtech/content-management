@@ -3,10 +3,8 @@ import request from 'supertest'
 const pool = require("../database")
 
 describe('testing POST /content/add', () => {
-
   afterAll(done => {
     pool.query('TRUNCATE posts RESTART IDENTITY CASCADE;', (err, res) => {
-    pool.end().then(done());
     })
   })
 
@@ -39,28 +37,33 @@ describe('testing POST /content/add', () => {
     expect(response.body.content).toEqual('test content')
     done()
   })
+})
 
-  // it('testing updating content', async done => {
-  //   const homeResponse = await request.get('/api/french')
-  //   expect(homeResponse.text).toContain('[{"id":1,"eng":"pan","fre":"la poêle","wordtype":"noun","category":"kitchen","gender":"la"}]')
-  //   done()
-  // })
-  //
-  // it('testing deleting content', async done => {
-  //   const homeResponse = await request.get('/api/latin')
-  //   expect(homeResponse.text).toContain('[{"id":1,"eng":"pan","lat":"cacabus","wordtype":"noun","category":"kitchen","gender":"masculine"}]')
-  //   done()
-  // })
-  //
-  // it('testing get 1 piece of content', async done => {
-  //   const homeResponse = await request.get('/api/latin')
-  //   expect(homeResponse.text).toContain('[{"id":1,"eng":"pan","lat":"cacabus","wordtype":"noun","category":"kitchen","gender":"masculine"}]')
-  //   done()
-  // })
-  //
-  // it('testing get all content', async done => {
-  //   const homeResponse = await request.get('/api/latin')
-  //   expect(homeResponse.text).toContain('[{"id":1,"eng":"pan","lat":"cacabus","wordtype":"noun","category":"kitchen","gender":"masculine"}]')
-  //   done()
-  // })
+describe('testing updating record with PUT /content/:id', () => {
+  afterAll(done => {
+    pool.query('TRUNCATE posts RESTART IDENTITY CASCADE;', (err, res) => {
+    })
+  })
+
+  it('testing updating content successfully', async done => {
+    const addRecord = await request(app).post("/content/add").send({
+      title: "test title (testing update record)",
+      content: "test content (testing update record)"
+    }) // creating record
+    const updatedRecord = await request(app).put("/content/1").send({
+      title: "test title (testing update record) UPDATED",
+      content: "test content (testing update record) UPDATED"
+    }) // updating record
+    const getUpdatedRecord = await request(app).get("/content/1") // get updated record
+
+    expect(addRecord.body.content_id).toEqual(1) // testing added record Id
+    expect(addRecord.statusCode).toBe(200)
+    expect(updatedRecord.statusCode).toBe(200)
+    expect(getUpdatedRecord.statusCode).toBe(200)
+    expect(getUpdatedRecord.body.content_id).toEqual(1)
+    expect(getUpdatedRecord.body.title).toEqual('test title (testing update record) UPDATED')
+    expect(getUpdatedRecord.body.content).toEqual('test content (testing update record) UPDATED')
+    done()
+  })
+
 })
