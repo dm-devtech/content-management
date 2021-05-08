@@ -93,7 +93,7 @@ describe('testing deleting record with DELETE /content/:id', () => {
   })
 })
 
-describe('testing get records with DELETE /content/:id', () => {
+describe('testing get records with get /content/:id', () => {
   afterAll(done => {
     pool.query('TRUNCATE posts RESTART IDENTITY CASCADE;', (err, res) => {
     })
@@ -114,5 +114,37 @@ describe('testing get records with DELETE /content/:id', () => {
     expect(getRecord.body.content).toEqual('test content (testing get a single record)')
     done()
   })
+})
 
+describe('testing get records with get /content/', () => {
+  afterAll(done => {
+    pool.query('TRUNCATE posts RESTART IDENTITY CASCADE;', (err, res) => {
+    })
+  })
+
+  it('testing get all content', async done => {
+    const addRecordOne = await request(app).post("/content/add").send({
+      title: "test title 1 (testing get all records)",
+      content: "test content 1 (testing get all records)"
+    }) // creating record 1
+    const addRecordTwo = await request(app).post("/content/add").send({
+      title: "test title 2 (testing get all records)",
+      content: "test content 2 (testing get all records)"
+    }) // creating record 2
+    const getRecords = await request(app).get("/content/") // get updated record
+
+    expect(addRecordOne.body.content_id).toEqual(1) // testing added record Id
+    expect(addRecordTwo.body.content_id).toEqual(2) // testing added record Id
+    expect(addRecordOne.statusCode).toBe(200)
+    expect(addRecordTwo.statusCode).toBe(200)
+    expect(getRecords.statusCode).toBe(200)
+    expect(getRecords.body[0].content_id).toEqual(1)
+    expect(getRecords.body[0].title).toEqual('test title 1 (testing get all records)')
+    expect(getRecords.body[0].content).toEqual('test content 1 (testing get all records)')
+    expect(getRecords.body[1].content_id).toEqual(2)
+    expect(getRecords.body[1].title).toEqual('test title 2 (testing get all records)')
+    expect(getRecords.body[1].content).toEqual('test content 2 (testing get all records)')
+    expect(getRecords.body[2]).toBeUndefined()
+    done()
+  })
 })
