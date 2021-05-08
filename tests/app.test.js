@@ -41,6 +41,22 @@ describe('testing POST /content/add', () => {
     expect(response.body.content).toEqual('test content') // checking body content
     done()
   })
+
+  it('testing error code is 400 when content is missing', async done => {
+    // adding record
+    const bodyData = [
+      {title: "title"},
+      {content: "Content"},
+      {}
+    ]
+
+    for(const body of bodyData){
+    const response = await request(app).post("/content/add").send(body)
+    expect(response.statusCode).toBe(400)
+    }
+
+    done()
+  })
 })
 
 describe('testing updating record with PUT /content/:id', () => {
@@ -69,6 +85,27 @@ describe('testing updating record with PUT /content/:id', () => {
     expect(getUpdatedRecord.body.content).toEqual('test content (testing update record) UPDATED') // checking body content
     done()
   })
+
+  it('testing error code is 400 when content is missing', async done => {
+    // adding record
+    const bodyData = [
+      {title: "title"},
+      {content: "Content"},
+      {}
+    ]
+
+    for(const body of bodyData){
+    const response = await request(app).put("/content/").send(body)
+    expect(response.statusCode).toBe(404)
+    }
+
+    for(const body of bodyData){
+    const response = await request(app).put("/content/1").send(body)
+    expect(response.statusCode).toBe(400)
+    }
+
+    done()
+  })
 })
 
 describe('testing deleting record with DELETE /content/:id', () => {
@@ -81,7 +118,7 @@ describe('testing deleting record with DELETE /content/:id', () => {
     const addRecord = await request(app).post("/content/add").send({
       title: "test title (testing deleting a record)",
       content: "test content (testing deleting a record)"
-    }) // creating record
+    })
     const deleteRecord = await request(app).delete("/content/1") // delete record
     const getDeletedRecord = await request(app).get("/content/1") // get updated record
 

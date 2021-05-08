@@ -5,8 +5,8 @@ CREATE DATABASE cms_db_test;
 
 CREATE TABLE posts(
   content_id SERIAL PRIMARY KEY,
-  title VARCHAR(255),
-  content VARCHAR(255)
+  title VARCHAR(255) NOT NULL,
+  content VARCHAR(255) NOT NULL
 );
 
 
@@ -18,6 +18,6 @@ CREATE DATABASE cms_db;
 
 CREATE TABLE posts(
   content_id SERIAL PRIMARY KEY,
-  title VARCHAR(255),
-  content VARCHAR(255)
+  title VARCHAR(255) NOT NULL,
+  content VARCHAR(255) NOT NULL
 );

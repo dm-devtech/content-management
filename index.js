@@ -31,10 +31,12 @@ app.get("/content/:id", async (req, res) => {
 app.post("/content/add", async (req, res) => {
   try {
     const {title, content} = req.body;
-    const newContent = await pool.query(
-      "INSERT INTO posts (title, content) VALUES ($1, $2) RETURNING *", [title, content]);
+
+    const newContent = !title || !content ? res.sendStatus(400) : await pool.query(
+    "INSERT INTO posts (title, content) VALUES ($1, $2) RETURNING *", [title, content]);
 
     res.json(newContent.rows[0])
+
   } catch(err){
     console.error(err.message)
   }
@@ -43,10 +45,10 @@ app.post("/content/add", async (req, res) => {
 // update a piece of content
 app.put("/content/:id", async (req,res) => {
   try {
-    const {id} = req.params; //WHERE
-    const {title, content} = req.body; // set
+    const {id} = req.params; 
+    const {title, content} = req.body;
 
-    const updateContent = await pool.query("UPDATE posts SET title = $1, content = $2 WHERE content_id = $3", [title, content, id]);
+    const updateContent = !title || !content ? res.sendStatus(400) : await pool.query("UPDATE posts SET title = $1, content = $2 WHERE content_id = $3", [title, content, id]);
 
     res.json("Content was updated")
 
