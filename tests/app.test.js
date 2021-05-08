@@ -92,3 +92,27 @@ describe('testing deleting record with DELETE /content/:id', () => {
     done()
   })
 })
+
+describe('testing get records with DELETE /content/:id', () => {
+  afterAll(done => {
+    pool.query('TRUNCATE posts RESTART IDENTITY CASCADE;', (err, res) => {
+    })
+  })
+
+  it('testing get single content record', async done => {
+    const addRecord = await request(app).post("/content/add").send({
+      title: "test title (testing get a single record)",
+      content: "test content (testing get a single record)"
+    }) // creating record
+    const getRecord = await request(app).get("/content/1") // get updated record
+
+    expect(addRecord.body.content_id).toEqual(1) // testing added record Id
+    expect(addRecord.statusCode).toBe(200)
+    expect(getRecord.statusCode).toBe(200)
+    expect(getRecord.body.content_id).toEqual(1)
+    expect(getRecord.body.title).toEqual('test title (testing get a single record)')
+    expect(getRecord.body.content).toEqual('test content (testing get a single record)')
+    done()
+  })
+
+})
