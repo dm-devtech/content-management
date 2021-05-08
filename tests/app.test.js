@@ -43,13 +43,14 @@ describe('testing POST /content/add', () => {
   })
 
   it('testing error code is 400 when content is missing', async done => {
-    // adding record
+  // array containing different info to be posted 1. only title, 2. only content, 3. neither
     const bodyData = [
       {title: "title"},
       {content: "Content"},
       {}
     ]
 
+    // looping through array of options, if any info missing expect 400 response
     for(const body of bodyData){
     const response = await request(app).post("/content/add").send(body)
     expect(response.statusCode).toBe(400)
@@ -87,18 +88,20 @@ describe('testing updating record with PUT /content/:id', () => {
   })
 
   it('testing error code is 400 when content is missing', async done => {
-    // adding record
+    // array containing different info to be posted 1. only title, 2. only content, 3. neither
     const bodyData = [
       {title: "title"},
       {content: "Content"},
       {}
     ]
 
+    // looping through array of info variatons given.  If no id given expect 404 response
     for(const body of bodyData){
     const response = await request(app).put("/content/").send(body)
     expect(response.statusCode).toBe(404)
     }
 
+    // looping through array of options, if any info missing expect 400 response
     for(const body of bodyData){
     const response = await request(app).put("/content/1").send(body)
     expect(response.statusCode).toBe(400)
