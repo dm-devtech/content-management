@@ -1,8 +1,13 @@
 const express = require("express")
 const app = express()
 const pool = require("./database")
+require('dotenv').config()
 
 app.use(express.json())
+
+app.get('/', (req, res) => {
+  res.send(req.oidc.isAuthenticated() ? 'Logged in' : 'Logged Out')
+}) // message when logged in
 
 // get all content
 app.get("/content/", async (req, res) => {
@@ -45,7 +50,7 @@ app.post("/content/add", async (req, res) => {
 // update a piece of content
 app.put("/content/:id", async (req,res) => {
   try {
-    const {id} = req.params; 
+    const {id} = req.params;
     const {title, content} = req.body;
 
     const updateContent = !title || !content ? res.sendStatus(400) : await pool.query("UPDATE posts SET title = $1, content = $2 WHERE content_id = $3", [title, content, id]);
