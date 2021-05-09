@@ -1,8 +1,10 @@
 const express = require("express")
 const app = express()
 const pool = require("./database")
+const path = require('path')
 require('dotenv').config()
 
+app.use(express.static(path.join(__dirname, 'build')));
 app.use(express.json())
 
 // ROUTES
