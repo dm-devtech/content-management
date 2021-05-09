@@ -1,45 +1,13 @@
 import app from '../index' // Link to your server file
 import request from 'supertest'
 const pool = require("../database")
-import { verifyAuth0Token } from "./auth";
-import createJWKSMock from "mock-jwks";
-import { TokenExpiredError } from "jsonwebtoken";
-require('dotenv').config()
-
-describe('testing authentication', () => {
-  const jwks = createJWKSMock(process.env.AUTH_TEST_DOMAIN);
-
-  beforeEach(() => {
-    jwks.start();
-  });
-
-  afterEach(() => {
-    jwks.stop();
-  });
-
-  it("should verify the token", async () => {
-    const token = jwks.token({});
-    const data = await verifyAuth0Token(token);
-    expect(data).toEqual({});
-  });
-
-  it("should be an invalid token", async () => {
-  expect.assertions(1);
-  const token = jwks.token({
-    exp: 0,
-  });
-
-  try {
-    const data = await verifyAuth0Token(token);
-  } catch (error) {
-    expect(error).toEqual(new TokenExpiredError("jwt expired"));
-  }
-  });
-})
-
 
 describe('testing POST /content/add', () => {
-
+  afterAll(done => {
+    pool.query('TRUNCATE posts RESTART IDENTITY CASCADE;', (err, res) => {
+    })
+  })
+  
   it('testing adding content successfully', async done => {
     //adding record
     const response = await request(app).post("/content/add").send({

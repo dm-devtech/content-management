@@ -16,6 +16,8 @@ CREATE TABLE users(
   role VARCHAR(50) NOT NULL
 );
 
+-- insert the below records or insert your own
+
 -- To create the production database
 CREATE DATABASE cms_db;
 
@@ -33,3 +35,5 @@ CREATE TABLE users(
   password VARCHAR(50) NOT NULL,
   role VARCHAR(50) NOT NULL
 );
+
+-- insert the below records or insert your own
