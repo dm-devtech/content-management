@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import './App.css';
 import Home from './Pages/Home';
-import List from './Pages/List';
+import AllContent from './Pages/AllContent';
+import IndividualContent from './Pages/IndividualContent';
 
 class App extends Component {
   render() {
@@ -10,7 +11,8 @@ class App extends Component {
       <div>
         <Switch>
           <Route exact path='/' component={Home}/>
-          <Route path='/list' component={List}/>
+          <Route path='/content/all' component={AllContent}/>
+          <Route path='/Content/single' component={IndividualContent}/>
         </Switch>
       </div>
     )
