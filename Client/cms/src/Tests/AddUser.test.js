@@ -22,7 +22,7 @@ describe('<AddContent />', () => {
     AddUser.prototype.switchUser.mockRestore();
   });
 
-  test('When next user button clicked moveContent function called', () => {
+  test('When next user button clicked moveUser function called', () => {
     const spy = jest.spyOn(AddUser.prototype, 'switchUser');
     const { getByText } = render(<AddUser/>, { wrapper: BrowserRouter });
     const nextUserButton = getByText("Next User")
@@ -40,7 +40,7 @@ describe('<AddContent />', () => {
     AddUser.prototype.deleteUser.mockRestore();
   });
 
-  test('When submit button clicked postNewContent function called', () => {
+  test('When submit button clicked addNewUser function called', () => {
     const spy = jest.spyOn(AddUser.prototype, 'addNewUser');
     const { getByTestId } = render(<AddUser/>, { wrapper: BrowserRouter });
     const submitButton = getByTestId("Submit")
