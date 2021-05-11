@@ -26,7 +26,7 @@ const Home = ({props}) =>
         All Users
       </LinkButton>
 
-      <LinkButton location='./users/' label='add-content' handleClick={props} children='Add User'>
+      <LinkButton location='./users/' label='add-users' handleClick={props} children='Add User'>
         Add User
       </LinkButton>
     </div>

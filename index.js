@@ -36,10 +36,10 @@ app.get("/content/:id", async (req, res) => {
 // to create one piece of content
 app.post("/content/add", async (req, res) => {
   try {
-    const {title, content} = req.body;
+    const {title, content, date_created} = req.body;
 
-    const newContent = !title || !content ? res.sendStatus(400) : await pool.query(
-    "INSERT INTO posts (title, content) VALUES ($1, $2) RETURNING *", [title, content]);
+    const newContent = !title || !content || !date_created ? res.sendStatus(400) : await pool.query(
+    "INSERT INTO posts (title, content, date_created) VALUES ($1, $2, $3) RETURNING *", [title, content, date_created]);
 
     res.json(newContent.rows[0])
 
@@ -105,10 +105,10 @@ app.get("/users/:id", async (req, res) => {
 // to create one user
 app.post("/users/add", async (req, res) => {
   try {
-    const {email, password, role} = req.body;
+    const {email, password, role, date_created} = req.body;
 
-    const newUser = !email || !password || !role ? res.sendStatus(400) : await pool.query(
-    "INSERT INTO users (email, password, role) VALUES ($1, $2, $3) RETURNING *", [email, password, role]);
+    const newUser = !email || !password || !role || !date_created ? res.sendStatus(400) : await pool.query(
+    "INSERT INTO users (email, password, role, date_created) VALUES ($1, crypt($2, gen_salt('bf')), $3, $4) RETURNING *", [email, password, role, date_created]);
 
     res.json(newUser.rows[0])
 
@@ -121,9 +121,9 @@ app.post("/users/add", async (req, res) => {
 app.put("/users/:id", async (req,res) => {
   try {
     const {id} = req.params;
-    const {email, password, role} = req.body;
+    const {email, password, role, date_created} = req.body;
 
-    const updateUser = !email || !password || !role ? res.sendStatus(400) : await pool.query("UPDATE users SET email = $1, password = $2, role = $3 WHERE user_id = $4", [email, password, role, id]);
+    const updateUser = !email || !password || !role ? res.sendStatus(400) : await pool.query("UPDATE users SET email = $1, password = crypt($2, gen_salt('bf')), role = $3 WHERE user_id = $4", [email, password, role, id]);
 
     res.json("User was updated")
 
