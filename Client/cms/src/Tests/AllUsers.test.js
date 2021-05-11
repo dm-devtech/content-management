@@ -24,7 +24,7 @@ test('renders the word content', () => {
   expect(content).toBeInTheDocument();
 });
 
-it('strike button when clicked goes to true - not mocked', () => {
+test('strike button when clicked goes to true - not mocked', () => {
   let clicked = false;
   const { getByText } = render(<List />);
   const deleteButton = getByText(/Delete Content/i)

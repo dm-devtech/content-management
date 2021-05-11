@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class AllContent extends Component {
+class AllUsers extends Component {
   // Initialize the state
   constructor(props){
     super(props);
@@ -9,8 +9,8 @@ class AllContent extends Component {
     }
   }
 
-  async deleteContent(id) {
-    const url = '/content/'
+  async deleteUser(id) {
+    const url = '/users/'
     const response = await fetch(url+id,{
       method:'DELETE',
       header:{'Accept':'application/json', 'Content-Type':'application/json'}
@@ -21,7 +21,7 @@ class AllContent extends Component {
   }
   // Fetch the list on first mount
   async componentDidMount() {
-    const url = '/content/'
+    const url = '/users/'
     const response = await fetch(url)
     const data = await response.json()
     this.setState({list: data})
@@ -33,13 +33,13 @@ class AllContent extends Component {
       <div>
         Content View
         <br/>
-        {this.state.list === undefined ? "No Content" : ""}
+        {list.length === 0 ? "No Content" : ""}
         <ul>
-          {list.map(item => (
-            <li key={item.content_id}>
-              Title: {item.title} | Content: {item.content}
-              <button className="button" onClick={()=> this.deleteContent(item.content_id)}>
-              Delete Content </button>
+          {list.map(user => (
+            <li key={user.user_id}>
+              User email: {user.title} | User Role: {user.content}
+              <button className="button" onClick={()=> this.deleteUser(user.user_id)}>
+              Delete User </button>
             </li>
           ))}
         </ul>
@@ -48,4 +48,4 @@ class AllContent extends Component {
   }
 }
 
-export default AllContent;
+export default AllUsers;
