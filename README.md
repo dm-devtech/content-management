@@ -21,7 +21,10 @@ All files    |   92.59 |    82.93 |     100 |   92.59 |
 
 ### Tech used:
 - Express for APIs
+- Postgres for the database
 - Jest to test back end
+- React for the front end
+- React Testing Library to test the front end
 
 ### Restful APIs
 - Content
