@@ -131,6 +131,7 @@ class AddUser extends Component {
               />
               <input
                 type='submit'
+                data-testid='Submit'
               />
               </form>
             </div>

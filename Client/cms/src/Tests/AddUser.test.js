@@ -1,33 +1,52 @@
-import { render, screen } from '@testing-library/react';
-import App from './App';
-import List from './Pages/List';
+import React from 'react';
+import { render, fireEvent } from '@testing-library/react';
+import { BrowserRouter } from "react-router-dom";
+import AddUser from '../Pages/AddUser';
 
-it('renders without crashing', () => {
-  render(<App />);
-});
+describe('<AddContent />', () => {
+  it('renders without crashing', () => {
+    render(<AddUser />, { wrapper: BrowserRouter });
+  });
 
-test('check page title exists', () => {
-  render(<List />);
-  const linkElement = screen.getByText(/Content View/i);
-  expect(linkElement).toBeInTheDocument();
-});
+  test('check page title exists', () => {
+    const {getByText} = render(<AddUser/>, { wrapper: BrowserRouter })
+    expect(getByText("User View")).toBeInTheDocument();
+  });
 
-test('renderse the word title in page', () => {
-  render(<List />);
-  const title = screen.getByText(/Title:/i);
-  expect(title).toBeInTheDocument();
-});
+  test('When previous user button clicked moveContent function called', () => {
+    const spy = jest.spyOn(AddUser.prototype, 'switchUser');
+    const { getByText } = render(<AddUser/>, { wrapper: BrowserRouter });
+    const prevUserButton = getByText("Previous User")
+    fireEvent.click(prevUserButton)
+    expect(spy).toHaveBeenCalled();
+    AddUser.prototype.switchUser.mockRestore();
+  });
 
-test('renders the word content', () => {
-  render(<List />);
-  const content = screen.getByText(/Content/i);
-  expect(content).toBeInTheDocument();
-});
+  test('When next user button clicked moveContent function called', () => {
+    const spy = jest.spyOn(AddUser.prototype, 'switchUser');
+    const { getByText } = render(<AddUser/>, { wrapper: BrowserRouter });
+    const nextUserButton = getByText("Next User")
+    fireEvent.click(nextUserButton)
+    expect(spy).toHaveBeenCalled();
+    AddUser.prototype.switchUser.mockRestore();
+  });
 
-test('strike button when clicked goes to true - not mocked', () => {
-  let clicked = false;
-  const { getByText } = render(<List />);
-  const deleteButton = getByText(/Delete Content/i)
-  fireEvent.click(deleteButton)
-  expect(clicked).toBe(true)
-});
+  test('When delete button clicked deleteUser function called', () => {
+    const spy = jest.spyOn(AddUser.prototype, 'deleteUser');
+    const { getByText } = render(<AddUser/>, { wrapper: BrowserRouter });
+    const deleteUserButton = getByText("Delete User")
+    fireEvent.click(deleteUserButton)
+    expect(spy).toHaveBeenCalled();
+    AddUser.prototype.deleteUser.mockRestore();
+  });
+
+  test('When submit button clicked postNewContent function called', () => {
+    const spy = jest.spyOn(AddUser.prototype, 'addNewUser');
+    const { getByTestId } = render(<AddUser/>, { wrapper: BrowserRouter });
+    const submitButton = getByTestId("Submit")
+    fireEvent.click(submitButton)
+    expect(spy).toHaveBeenCalled();
+    AddUser.prototype.addNewUser.mockRestore();
+  });
+
+})
