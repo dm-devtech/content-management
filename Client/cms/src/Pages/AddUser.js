@@ -47,21 +47,24 @@ class AddUser extends Component {
   }
 
   // delete one User
-  async deleteUser(id) {
-    const url = '/users/'
-    const deleteResponse = await fetch(url+id,{
-      method:'DELETE',
-      header:{'Accept':'application/json', 'Content-Type':'application/json'}
-    })
-    this.updateUserState()
+  async deleteUser() {
+    if(this.list === 0 || this.list === undefined) {
+    }else {
+      const url = '/users/'
+      const deleteResponse = await fetch(url+this.state.currentUser,{
+        method:'DELETE',
+        header:{'Accept':'application/json', 'Content-Type':'application/json'}
+      })
+      this.updateUserState()
+    }
   }
 
   async addNewUser() {
     const url = '/users/add'
-    const deleteResponse = await fetch(url,{
+    const addUser = await fetch(url,{
       method:'POST',
       headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({email: this.state.email, password: this.state.password, role: this.state.role})
+      body: JSON.stringify({email: this.state.email, password: this.state.password, role: this.state.role, date_created: 'NOW()'})
     })
     this.updateUserState()
   }
@@ -92,48 +95,57 @@ class AddUser extends Component {
     const data = await response.json()
     const firstUser = data[0]
     this.setState({list: firstUser})
+    this.setState({currentUser: this.state.id[this.state.counter]})
   }
 
   render() {
+    const {list} = this.state;
     return (
-      <div> User View
-        <div>
-          User Email: {this.state.list === undefined ? "-" : this.state.list.email}
+      <div className='Header'> User View
+        <div className='body-text'>
+          User Email: {list === undefined || list.length === 0 ? "-" : list.email}
           <br/>
-          User Role: {this.state.list === undefined ? "-" : this.state.list.email}
+          User Role: {list === undefined || list.length === 0 ? "-" : list.email}
           <br/>
-          <button className="button" onClick={()=> this.switchUser("previous")}>
+          Date Created: {list === undefined || list.length === 0 ? "-" : list.date_created.slice(0, 10)}
+          <br/>
+          <button className="add-button" onClick={()=> this.switchUser("previous")}>
           Previous User </button>
-          <button className="button" onClick={()=> this.switchUser("next")}>
+          <button className="add-button" onClick={()=> this.switchUser("next")}>
           Next User </button>
-          <button className="button" onClick={()=> this.deleteUser(this.state.id[this.state.counter])}>
+          <button className="add-button" onClick={()=> this.deleteUser()}>
           Delete User </button>
-            <div>
+            <div className='Header'>
             Add User
+            <div className='body-text'>
               <form onSubmit={this.mySubmitHandler}>
               <p>Enter User Email:</p>
-              <input
-                type='text'
+              <textarea
                 name='email'
                 onChange={this.myChangeHandler}
+                style={{width: "200px"}}
               />
               <p>Enter User Password:</p>
               <input
-                type='text'
                 name='password'
+                type='password'
                 onChange={this.myChangeHandler}
+                style={{width: "200px"}}
               />
               <p>Enter User Role:</p>
-              <input
-                type='text'
+              <textarea
                 name='role'
                 onChange={this.myChangeHandler}
+                style={{width: "200px"}}
               />
+              <br/>
               <input
                 type='submit'
                 data-testid='Submit'
+                className='add-button'
               />
               </form>
+            </div>
             </div>
         </div>
       </div>

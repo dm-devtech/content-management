@@ -4,7 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 import AddContent from '../Pages/AddContent';
 
 describe('<AddContent />', () => {
-  it('renders without crashing', () => {
+  test('renders without crashing', () => {
     render(<AddContent />, { wrapper: BrowserRouter });
   });
 

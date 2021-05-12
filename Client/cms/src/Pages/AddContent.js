@@ -46,22 +46,24 @@ class AddContent extends Component {
   }
 
   // delete one piece of content
-  async deleteContent(id) {
-    console.log("DC called")
-    const url = '/content/'
-    const deleteResponse = await fetch(url+id,{
-      method:'DELETE',
-      header:{'Accept':'application/json', 'Content-Type':'application/json'}
-    })
-    this.updateContentState()
+  async deleteContent() {
+    if(this.list === 0 || this.list === undefined) {
+    }else {
+      const url = '/content/'
+      const deleteResponse = await fetch(url+this.state.currentContent,{
+        method:'DELETE',
+        header:{'Accept':'application/json', 'Content-Type':'application/json'}
+      })
+      this.updateContentState()
+    }
   }
 
   async postNewContent() {
     const url = '/content/add'
-    const deleteResponse = await fetch(url,{
+    const postContent = await fetch(url,{
       method:'POST',
       headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({title: this.state.title, content: this.state.content})
+      body: JSON.stringify({title: this.state.title, content: this.state.content, date_created: 'NOW()'})
     })
     this.updateContentState()
   }
@@ -92,42 +94,51 @@ class AddContent extends Component {
     const data = await response.json()
     const firstContent = data[0]
     this.setState({list: firstContent})
+    this.setState({currentContent: this.state.id[this.state.counter]})
   }
 
   render(props) {
+    const {list} = this.state;
     return (
-      <div> Content View
-        <div>
-          Title: {this.state.list === undefined ? "-" : this.state.list.title}
+      <div className='Header'> Content View
+        <div className='body-text'>
+          Title: {list === undefined || list.length === 0 ? "-" : list.title}
           <br/>
-          Content: {this.state.list === undefined ? "-" : this.state.list.content}
+          Content: {list === undefined || list.length === 0 ? "-" : list.content}
           <br/>
-          <button className="button" onClick={()=> this.moveContent("previous")}>
+          Date Created: {list === undefined || list.length === 0  ? "-" : list.date_created.slice(0, 10)}
+          <br/>
+          <button className="add-button" onClick={()=> this.moveContent("previous")}>
           Previous Content </button>
-          <button className="button" onClick={()=> this.moveContent("next")}>
+          <button className="add-button" onClick={()=> this.moveContent("next")}>
           Next Content </button>
-          <button className="button" onClick={()=> this.deleteContent(this.state.id[this.state.counter])}>
+          <button className="add-button" onClick={()=> this.deleteContent()}>
           Delete Content </button>
-            <div>
+            <div className='Header'>
             Add content
+            <div className='alt-body'>
               <form onSubmit={this.mySubmitHandler}>
               <p>Enter Content Title:</p>
-              <input
-                type='text'
+              <textarea
                 name='title'
                 onChange={this.myChangeHandler}
+                style={{width: "250px"}}
               />
               <p>Enter Content Body:</p>
-              <input
-                type='text'
+              <textarea
                 name='content'
                 onChange={this.myChangeHandler}
+                style={{width: "250px", height: "80px"}}
               />
+              <br/>
+              <br/>
               <input
                 type='submit'
                 data-testid="Submit"
+                className="add-button"
               />
               </form>
+            </div>
             </div>
         </div>
       </div>

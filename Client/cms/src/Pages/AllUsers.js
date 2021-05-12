@@ -9,40 +9,53 @@ class AllUsers extends Component {
     }
   }
 
+  async getUserData() {
+    try {
+      const url = '/users/'
+      const response = await fetch(url)
+      const data = await response.json()
+      return data
+    } catch (err) {
+      console.error(err.message);
+    }
+  }
+
   async deleteUser(id) {
-    const url = '/users/'
-    const response = await fetch(url+id,{
-      method:'DELETE',
-      header:{'Accept':'application/json', 'Content-Type':'application/json'}
-    })
-    const newResponse = await fetch(url)
-    const newData = await newResponse.json()
-    this.setState({list: newData})
+    try {
+      const url = '/users/'
+      const response = await fetch(url+id,{
+        method:'DELETE',
+        header:{'Accept':'application/json', 'Content-Type':'application/json'}
+      })
+      const newResponse = await fetch(url)
+      const newData = await newResponse.json()
+      this.setState({list: newData})
+    } catch (err) {
+      console.error(err.message);
+    }
   }
   // Fetch the list on first mount
   async componentDidMount() {
-    const url = '/users/'
-    const response = await fetch(url)
-    const data = await response.json()
-    this.setState({list: data})
+    const content = await this.getUserData()
+    this.setState({list: content})
   }
 
   render() {
     const {list} = this.state;
     return (
       <div>
-        Content View
+        User View
         <br/>
-        {list.length === 0 ? "No Content" : ""}
+        {list === undefined || list.length === 0 ? "No Users" :
         <ul>
-          {list.map(user => (
-            <li key={user.user_id}>
-              User email: {user.title} | User Role: {user.content}
-              <button className="button" onClick={()=> this.deleteUser(user.user_id)}>
-              Delete User </button>
+        {list.map(user => (
+          <li key={user.user_id}>
+            User email: {user.title} | User Role: {user.content} | Date Created: {user.date_created.toString().slice(0,10)}
+              <button className="button" onClick={()=> this.deleteContent(user.user_id)}>
+              Delete Content </button>
             </li>
           ))}
-        </ul>
+        </ul>}
       </div>
     );
   }

@@ -1,0 +1,14 @@
+{
+  "users": [
+    {
+      "user_id": 1,
+      "email": "test@test.com",
+      "role": "user"
+    },
+    {
+      "user_id": 2,
+      "email": "test2@test.com",
+      "role": "user2"
+    }
+  ]
+}

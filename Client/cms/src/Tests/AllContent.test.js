@@ -1,25 +1,42 @@
-import { render, screen } from '@testing-library/react';
-import App from './App';
-import AllContent from './Pages/AllContent';
+import { render, screen, waitFor, fireEvent } from '@testing-library/react';
+import { BrowserRouter } from "react-router-dom";
+import App from '../App';
+import AllContent from '../Pages/AllContent';
 
-it('renders without crashing', () => {
-  render(<App />);
-});
+describe('test all content view', () => {
+  test('renders without crashing', () => {
+    render(<App />, { wrapper: BrowserRouter });
+  });
 
-test('check page title exists', () => {
-  render(<AllContent />);
-  const linkElement = screen.getByText(/Content View/i);
-  expect(linkElement).toBeInTheDocument();
-});
+  test('check page title exists', () => {
+    const {getByText} = render(<AllContent/>, { wrapper: BrowserRouter })
+    const title = getByText(/Content View/i)
+    expect(title).toBeInTheDocument();
+  });
 
-test('renderse the word title in page', () => {
-  render(<AllContent />);
-  const title = screen.getByText(/Title:/i);
-  expect(title).toBeInTheDocument();
-});
+  test('check no content title', () => {
+    const {getByText} = render(<AllContent/>, { wrapper: BrowserRouter })
+    const title = getByText(/No Content/i)
+    expect(title).toBeInTheDocument();
+  });
 
-test('renders the word content', () => {
-  render(<AllContent />);
-  const content = screen.getByText(/Content/i);
-  expect(content).toBeInTheDocument();
-});
+  // test.only('check delete button available', async done => {
+  //   const mockData = jest.fn({title: "test email", content: "password", date_created: "2021-05-12"})
+  //   const getContentSpy = jest.spyOn(AllContent.prototype, 'getContentData').mockReturnValue(mockData)
+  //   const deleteContentSpy = jest.spyOn(AllContent.prototype, 'deleteContent')
+  //   const { getByText } = render(<AllContent/>, { wrapper: BrowserRouter });
+  //   const deleteButton = waitFor(() => { getByText("Delete") });
+  //   fireEvent.click(deleteButton)
+  //   expect(getContentSpy).toHaveBeenCalled();
+  //   expect(deleteContentSpy).toHaveBeenCalled();
+  //   AllContent.prototype.getContentData.mockRestore();
+  // });
+
+  test('data is retrieved when page loads', () => {
+    const spy = jest.spyOn(AllContent.prototype, 'getContentData')
+    const { getByText } = render(<AllContent/>, { wrapper: BrowserRouter });
+    expect(spy).toHaveBeenCalled();
+    AllContent.prototype.getContentData.mockRestore();
+  });
+
+})

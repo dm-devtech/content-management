@@ -4,7 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 import AddUser from '../Pages/AddUser';
 
 describe('<AddContent />', () => {
-  it('renders without crashing', () => {
+  test('renders without crashing', () => {
     render(<AddUser />, { wrapper: BrowserRouter });
   });
 
