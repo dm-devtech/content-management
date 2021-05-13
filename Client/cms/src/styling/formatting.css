@@ -34,9 +34,11 @@ h3 {
   color: #6d5f67;
   font: 24px Arial, sans-serif;
   font-weight: bold;
-  margin-top: 15px;
-  margin-bottom: 15px;
-  align: center;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  justify-content: center;
+  display: inline-grid;
+  text-align: center;
 }
 
 .body-text {
@@ -47,14 +49,14 @@ h3 {
   font: 12px Arial, sans-serif;
   text-decoration: none;
   margin-top: 5px;
-  display:inline-block;
-  margin-bottom: 15px;
+  margin-bottom: 5px;
 }
 
 p {
   margin: 5px;
   font-weight: bold;
   font: 12px Arial, sans-serif;
+
 }
 
 .alt-body {
@@ -74,7 +76,7 @@ body {
   font: 50px Arial, sans-serif;
   text-align: center;
   text-decoration: none;
-  display: inline-block;
+  text-align: center;
 }
 
 .home-button {
@@ -89,7 +91,6 @@ body {
   border-radius: 100px;
   box-shadow: 0 6px #cba77c;
   margin: 8px;
-  font-weight: bold;
 }
 
 .home-button:hover {
@@ -116,9 +117,6 @@ body {
   box-shadow: 0 6px #cba77c;
   margin-bottom: 10px;
   margin: 5px;
-  font-weight: bold;
-  display: inline-flex;
-  align-items: center;
 }
 
 .add-button:hover {

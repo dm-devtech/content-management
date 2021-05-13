@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Footer from '../components/Footer.js'
 
 class AllContent extends Component {
   // Initialize the state
@@ -43,19 +44,27 @@ class AllContent extends Component {
   render() {
     const {list} = this.state;
     return (
-      <div>
+      <div className='Header'>
         Content View
         <br/>
+        <div className='body-text'>
         {list === undefined || list.length === 0 ? "No Content" :
         <ul>
           {list.map(item => (
             <li key={item.content_id}>
-              Title: {item.title} | Content: {item.content} | Data Created: {item.date_created.toString().slice(0, 10)}
-              <button className="button" onClick={()=> this.deleteContent(item.content_id)}>
+              Title: {item.title}
+              <br/>
+              Content: {item.content}
+              <br/>
+              Data Created: {item.date_created.toString().slice(0, 10)}
+              <br/>
+              <button className="add-button" onClick={()=> this.deleteContent(item.content_id)}>
               Delete Content </button>
             </li>
           ))}
         </ul>}
+      </div>
+      <Footer/>
       </div>
     );
   }

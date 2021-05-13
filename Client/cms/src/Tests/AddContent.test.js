@@ -14,39 +14,44 @@ describe('<AddContent />', () => {
   });
 
   test('When previous content button clicked moveContent function called', () => {
-    const spy = jest.spyOn(AddContent.prototype, 'moveContent');
+    const moveContentSpy = jest.spyOn(AddContent.prototype, 'moveContent');
     const { getByText } = render(<AddContent/>, { wrapper: BrowserRouter });
     const prevContentButton = getByText("Previous Content")
     fireEvent.click(prevContentButton)
-    expect(spy).toHaveBeenCalled();
+    expect(moveContentSpy).toHaveBeenCalled();
     AddContent.prototype.moveContent.mockRestore();
   });
 
   test('When next content button clicked moveContent function called', () => {
-    const spy = jest.spyOn(AddContent.prototype, 'moveContent');
+    const moveContentSpy = jest.spyOn(AddContent.prototype, 'moveContent');
     const { getByText } = render(<AddContent/>, { wrapper: BrowserRouter });
     const nextContentButton = getByText("Next Content")
     fireEvent.click(nextContentButton)
-    expect(spy).toHaveBeenCalled();
+    expect(moveContentSpy).toHaveBeenCalled();
     AddContent.prototype.moveContent.mockRestore();
   });
 
   test('When delete button clicked deleteContent function called', () => {
-    const spy = jest.spyOn(AddContent.prototype, 'deleteContent');
+    const deleteContentSpy = jest.spyOn(AddContent.prototype, 'deleteContent');
     const { getByText } = render(<AddContent/>, { wrapper: BrowserRouter });
     const deleteContentButton = getByText("Delete Content")
     fireEvent.click(deleteContentButton)
-    expect(spy).toHaveBeenCalled();
+    expect(deleteContentSpy).toHaveBeenCalled();
     AddContent.prototype.deleteContent.mockRestore();
   });
 
   test('When submit button clicked postNewContent function called', () => {
-    const spy = jest.spyOn(AddContent.prototype, 'postNewContent');
+    const postNewContentSpy = jest.spyOn(AddContent.prototype, 'postNewContent');
     const { getByTestId } = render(<AddContent/>, { wrapper: BrowserRouter });
     const submitButton = getByTestId("Submit")
     fireEvent.click(submitButton)
-    expect(spy).toHaveBeenCalled();
+    expect(postNewContentSpy).toHaveBeenCalled()
     AddContent.prototype.postNewContent.mockRestore();
+  });
+
+  test('Home button exists', () => {
+    const {getByText} = render(<AddContent/>, { wrapper: BrowserRouter })
+    expect(getByText("Home")).toBeInTheDocument();
   });
 
 })
