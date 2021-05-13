@@ -5,7 +5,7 @@
 2. Move to the root directory and run ```npm install```
 3. Ensure postgres is installed, then create a postgres user with creation permissions.
 4. Create the databases, extensions and tables as per the instructions [here](db-schema.sql)
-5. Create .env file with variables PG_USER, PG_PASSWORD (use the credentials for the postgres user set up in step 3), PORT (use pg default port) and
+5. Create .env file with variables PG_USER, PG_PASSWORD (use the credentials for the postgres user set up in step 4), PORT (use pg default port) and
 NODE_ENV=production
 6. To run the app go to the parent directory and run ```npm start```
 
