@@ -10,21 +10,21 @@ NODE_ENV=production (use the credentials for the postgres user set up in step 3)
 6. To run the app go to the parent directory and run ```npm start```
 
 ### Screenshots
-![home](Screenshots/Home.JPG)
-![home](Screenshots/AddContent.JPG)
-![home](Screenshots/AllContent.JPG)
-![home](Screenshots/AddUsers.JPG)
-![home](Screenshots/AllUsers.JPG)
+![home](Screenshots/Homepage.JPG)
+![AddContent](Screenshots/AddContent.JPG)
+![AllContent](Screenshots/AllContent.JPG)
+![AddUsers](Screenshots/AddUsers.JPG)
+![AllUsers](Screenshots/AllUsers.JPG)
 
 ##### Tests
 - Express API back end test coverage:
--------------|---------|----------|---------|---------|---------------------
+
 File         | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s
 -------------|---------|----------|---------|---------|---------------------
 All files    |   91.78 |    95.45 |     100 |   91.78 |
  database.js |     100 |       50 |     100 |     100 | 9
  index.js    |   91.18 |      100 |     100 |   91.18 | 20,32,75,89,101,144
--------------|---------|----------|---------|---------|---------------------
+
 
 ### Tech used:
 - Express for APIs
