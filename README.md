@@ -13,7 +13,7 @@ NODE_ENV=production (use the credentials for the postgres user set up in step 3)
 ![home](Screenshots/Homepage.JPG)
 ![AddContent](Screenshots/AddContent.JPG)
 ![AllContent](Screenshots/AllContent.JPG)
-![AddUsers](Screenshots/AddUsers.JPG)
+![AddUsers](Screenshots/AddUser.JPG)
 ![AllUsers](Screenshots/AllUsers.JPG)
 
 ##### Tests
