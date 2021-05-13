@@ -1,30 +1,38 @@
 ## Content Management System
 
-### To run CMS
-1. Clone Git repo to local directory
-2. Move to directory in terminal and run ```npm install```
-3. Install Postgres, if already installed then create database, extensions and tables as per db-schema.sql file in root directory
-4. Create .env file with variables PG_USER, PG_PASSWORD, and
-NODE_ENV=production
-5. To run the app go to the parent folder and run ```npm start```
+### To run the CMS
+1. Clone the Git repo to your local directory
+2. Move to the root directory and run ```npm install```
+3. Ensure postgres is installed, then create a postgres user with creation permissions.
+4. Create the databases, extensions and tables as per the instructions [here](db-schema.sql)
+5. Create .env file with variables PG_USER, PG_PASSWORD, and
+NODE_ENV=production (use the credentials for the postgres user set up in step 3)
+6. To run the app go to the parent directory and run ```npm start```
 
-#### To run tests
-1. Run ```npm test```
+### Screenshots
+![home](Screenshots/Home.JPG)
+![home](Screenshots/AddContent.JPG)
+![home](Screenshots/AllContent.JPG)
+![home](Screenshots/AddUsers.JPG)
+![home](Screenshots/AllUsers.JPG)
 
-##### Coverage (Express API Routes)
+##### Tests
+- Express API back end test coverage:
+-------------|---------|----------|---------|---------|---------------------
 File         | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s
--------------|---------|----------|---------|---------|-----------------------------------------
-All files    |   92.59 |    82.93 |     100 |   92.59 |
- database.js |     100 |        0 |     100 |     100 | 9
- index.js    |   91.89 |       85 |     100 |   91.89 | 20-21,32-33,75-76,89-90,101-102,144-145
-
+-------------|---------|----------|---------|---------|---------------------
+All files    |   91.78 |    95.45 |     100 |   91.78 |
+ database.js |     100 |       50 |     100 |     100 | 9
+ index.js    |   91.18 |      100 |     100 |   91.18 | 20,32,75,89,101,144
+-------------|---------|----------|---------|---------|---------------------
 
 ### Tech used:
 - Express for APIs
 - Postgres for the database
+  - Postgres extension pgcrypto for encryption
 - Jest to test back end
-- React for the front end
-- React Testing Library to test the front end
+- React for the front end (create-react-app)
+- Jest/React Testing Library to test the front end
 
 ### Restful APIs
 - Content
