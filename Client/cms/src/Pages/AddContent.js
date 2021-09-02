@@ -20,9 +20,13 @@ const AddContent = () => {
   }, []);
 
   async function retrieveContent() {
-    const newResponse = await fetch('/content/')
-    const content = await newResponse.json()
-    return content === undefined || content.length === 0 ? 0 : content
+    try {
+      const newResponse = await fetch('/content/')
+      const content = await newResponse.json()
+      return content === undefined || content.length === 0 ? 0 : content
+    } catch (err) {
+      console.error(err.message);
+    }
   }
 
   async function contentIds() {
@@ -33,9 +37,8 @@ const AddContent = () => {
 
   async function contentCounter(direction) {
     const ids = await contentIds()
-    if(direction === "next" && counter <= (ids.length-2)) setCounter(counter+1)
-    if(direction === "previous" && counter > 0) setCounter(counter-1)
-    console.log("counter", counter)
+    if(direction === "next" && counter <= (ids.length-2)) setCounter(counter + 1)
+    if(direction === "previous" && counter > 0) setCounter(counter - 1)
   }
 
   async function moveContent(direction) {
@@ -43,7 +46,6 @@ const AddContent = () => {
     contentCounter(direction)
     const newResponse = await fetch('/content/'+[ids[counter]])
     const newData = await newResponse.json()
-    console.log("Move content: ids", ids, "ids[counter]", ids[counter], "newResponse", newResponse, "newData", newData)
     setList(newData)
   }
 
