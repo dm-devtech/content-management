@@ -43,7 +43,7 @@ const AllContent = () => {
       <div className='Header'>
         Content View
         <br/>
-        <div className='body-text'>
+        <div className='body-text' data-testid='content'>
         {list === undefined || list.length === 0 ? "No Content" :
         <ul>
           {list.map(content => (
@@ -52,9 +52,9 @@ const AllContent = () => {
               <br/>
               Content: {content.content}
               <br/>
-              Data Created: {content.date_created.toString().slice(0, 10)}
+              Date Created: {content.date_created.toString().slice(0, 10)}
               <br/>
-              <button className="add-button" onClick={()=> deleteContent(content.content_id)}>
+              <button className="add-button" data-testid='delete-button' onClick={()=> deleteContent(content.content_id)}>
               Delete Content </button>
             </li>
           ))}

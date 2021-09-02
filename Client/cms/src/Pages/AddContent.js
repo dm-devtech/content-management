@@ -88,7 +88,7 @@ const AddContent = () => {
 
     return (
       <div className='Header'> Content View
-        <div className='body-text'>
+        <div className='body-text' data-testid='info'>
           Title: {list === undefined || list.length === 0 ? "-" : list.title}
           <br/>
           Content: {list === undefined || list.length === 0 ? "-" : list.content}
@@ -107,12 +107,14 @@ const AddContent = () => {
                 <p>Enter Content Title:</p>
                 <textarea
                   name='title'
+                  data-testid="title"
                   onChange={myChangeHandler}
                   style={{width: "250px"}}
                 />
                 <p>Enter Content Body:</p>
                 <textarea
                   name='content'
+                  data-testid="body"
                   onChange={myChangeHandler}
                   style={{width: "250px", height: "80px"}}
                 />

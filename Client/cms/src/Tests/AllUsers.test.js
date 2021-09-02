@@ -20,15 +20,58 @@ describe('test all Users view', () => {
     expect(title).toBeInTheDocument();
   });
 
-  test.only('data is retrieved when page loads', () => {
-    const spy = jest.spyOn(AllUsers.prototype, 'getUserData')
-    const { getByText } = render(<AllUsers/>);
-    expect(spy).toHaveBeenCalled();
-    AllUsers.prototype.getUserData.mockRestore();
-  });
-
   test('Home button exists', () => {
     const {getByText} = render(<AllUsers/>, { wrapper: BrowserRouter })
     expect(getByText("Home")).toBeInTheDocument();
   });
+
+  test('adding a user', async () => {
+    const fakeApi = [{email:"testemail@test.com", password:"12345678", role:"admin", date_created:"2021-09-02"}]
+
+    const fetchSpy = jest.spyOn(window, 'fetch').mockImplementation(() => {
+      const fetchResponse = {
+        ok: true,
+        json: () => Promise.resolve(fakeApi),
+        status: 200
+      };
+      return Promise.resolve(fetchResponse);
+    })
+
+    const {getByTestId} = render(<AllUsers/>, { wrapper: BrowserRouter })
+    const user = getByTestId('user')
+    
+    await waitFor(() => expect(screen.getByTestId('user')).toHaveTextContent("User email: testemail@test.com"))
+    await waitFor(() => expect(screen.getByTestId('user')).toHaveTextContent("User Role: admin"))
+    await waitFor(() => expect(screen.getByTestId('user')).toHaveTextContent("Date Created: 2021-09-02"))
+  })
+
+  test('deleting user', async () => {
+    const fakeApi = [{email:"testemail@test.com", password:"12345678", role:"admin", date_created:"2021-09-02"}]
+    
+    const fetchSpy = jest.spyOn(window, 'fetch').mockImplementation(() => {
+      const fetchResponse = {
+        ok: true,
+        json: () => Promise.resolve(fakeApi),
+        status: 200
+      };
+      return Promise.resolve(fetchResponse);
+    })
+
+    const {getByTestId} = render(<AllUsers/>, { wrapper: BrowserRouter })
+    const user = getByTestId('user')
+
+    await waitFor(() => expect(screen.getByTestId('user')).toHaveTextContent("User email: testemail@test.com"))
+    await waitFor(() => expect(screen.getByTestId('user')).toHaveTextContent("User Role: admin"))
+    await waitFor(() => expect(screen.getByTestId('user')).toHaveTextContent("Date Created: 2021-09-02"))
+
+    const deleteButton = getByTestId("delete-button")
+    fireEvent.click(deleteButton);
+
+    const {getByText} = render(<AllUsers/>, { wrapper: BrowserRouter })
+    const title = getByText(/No Users/i)
+
+    await waitFor(() => expect(title).toBeInTheDocument())
+  })
 })
+
+

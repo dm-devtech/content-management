@@ -43,7 +43,7 @@ const AllUsers = () => {
       <div className='Header'>
         User View
         <br/>
-          <div className='body-text'>
+          <div className='body-text' data-testid="user" >
         {list === undefined || list.length === 0 ? "No Users" :
         <ul>
         {list.map(user => (
@@ -53,7 +53,7 @@ const AllUsers = () => {
              User Role: {user.role}
              <br/>
               Date Created: {user.date_created.toString().slice(0,10)}
-              <button className="add-button" onClick={() => deleteUser(user.user_id)}>
+              <button data-testid="delete-button" className="add-button" onClick={() => deleteUser(user.user_id)}>
               Delete User </button>
             </li>
           ))}

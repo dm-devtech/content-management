@@ -20,15 +20,56 @@ describe('test all content view', () => {
     expect(title).toBeInTheDocument();
   });
 
-  test('data is retrieved when page loads', () => {
-    const spy = jest.spyOn(AllContent.prototype, 'getContentData')
-    const { getByText } = render(<AllContent/>, { wrapper: BrowserRouter });
-    expect(spy).toHaveBeenCalled();
-    AllContent.prototype.getContentData.mockRestore();
-  });
-
   test('Home button exists', () => {
     const {getByText} = render(<AllContent/>, { wrapper: BrowserRouter })
     expect(getByText("Home")).toBeInTheDocument();
   });
+
+  test('adding content', async () => {
+    const fakeApi = [{title:"test header", content:"test body", date_created:"2021-09-03"}]
+
+    const fetchSpy = jest.spyOn(window, 'fetch').mockImplementation(() => {
+      const fetchResponse = {
+        ok: true,
+        json: () => Promise.resolve(fakeApi),
+        status: 200
+      };
+      return Promise.resolve(fetchResponse);
+    })
+
+    const {getByTestId} = render(<AllContent/>, { wrapper: BrowserRouter })
+    const user = getByTestId('content')
+    
+    await waitFor(() => expect(screen.getByTestId('content')).toHaveTextContent("Title: test header"))
+    await waitFor(() => expect(screen.getByTestId('content')).toHaveTextContent("Content: test body"))
+    await waitFor(() => expect(screen.getByTestId('content')).toHaveTextContent("Date Created: 2021-09-03"))
+  })
+
+  test.only('deleting record', async () => {
+    const fakeApi = [{title:"test header", content:"test body", date_created:"2021-09-03"}]
+
+    const fetchSpy = jest.spyOn(window, 'fetch').mockImplementation(() => {
+      const fetchResponse = {
+        ok: true,
+        json: () => Promise.resolve(fakeApi),
+        status: 200
+      };
+      return Promise.resolve(fetchResponse);
+    })
+
+    const {getByTestId} = render(<AllContent/>, { wrapper: BrowserRouter })
+    const user = getByTestId('content')
+
+    await waitFor(() => expect(screen.getByTestId('content')).toHaveTextContent("Title: test header"))
+    await waitFor(() => expect(screen.getByTestId('content')).toHaveTextContent("Content: test body"))
+    await waitFor(() => expect(screen.getByTestId('content')).toHaveTextContent("Date Created: 2021-09-03"))
+
+    const deleteButton = getByTestId("delete-button")
+    fireEvent.click(deleteButton);
+
+    const {getByText} = render(<AllContent/>, { wrapper: BrowserRouter })
+    const title = getByText(/No Content/i)
+
+    await waitFor(() => expect(title).toBeInTheDocument())
+  })
 })
