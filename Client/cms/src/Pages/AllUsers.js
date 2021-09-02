@@ -1,16 +1,19 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import Footer from '../components/Footer.js'
 
-class AllUsers extends Component {
-  // Initialize the state
-  constructor(props){
-    super(props);
-    this.state = {
-      list: []
-    }
-  }
+const AllUsers = () => {
+  const [list, setList] = useState("")
 
-  async getUserData() {
+  useEffect(() => {
+    async function setUserList() {
+      const content = await getUserData()
+      setList(content)
+    }
+
+    setUserList()
+  }, []);
+
+  async function getUserData() {
     try {
       const url = '/users/'
       const response = await fetch(url)
@@ -21,7 +24,7 @@ class AllUsers extends Component {
     }
   }
 
-  async deleteUser(id) {
+  async function deleteUser(id) {
     try {
       const url = '/users/'
       const response = await fetch(url+id,{
@@ -30,19 +33,12 @@ class AllUsers extends Component {
       })
       const newResponse = await fetch(url)
       const newData = await newResponse.json()
-      this.setState({list: newData})
+      setList(newData)
     } catch (err) {
       console.error(err.message);
     }
   }
-  // Fetch the list on first mount
-  async componentDidMount() {
-    const content = await this.getUserData()
-    this.setState({list: content})
-  }
 
-  render() {
-    const {list} = this.state;
     return (
       <div className='Header'>
         User View
@@ -52,12 +48,12 @@ class AllUsers extends Component {
         <ul>
         {list.map(user => (
           <li key={user.user_id}>
-            User email: {user.title}
+            User email: {user.email}
             <br/>
-             User Role: {user.content}
+             User Role: {user.role}
              <br/>
               Date Created: {user.date_created.toString().slice(0,10)}
-              <button className="add-button" onClick={()=> this.deleteUser(user.user_id)}>
+              <button className="add-button" onClick={() => deleteUser(user.user_id)}>
               Delete User </button>
             </li>
           ))}
@@ -67,6 +63,5 @@ class AllUsers extends Component {
       </div>
     );
   }
-}
 
 export default AllUsers;
