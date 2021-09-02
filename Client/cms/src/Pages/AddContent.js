@@ -5,10 +5,8 @@ const AddContent = () => {
   const [list, setList] = useState([])
   const [counter, setCounter] = useState(1)
   const [title, setTitle] = useState(null)
-  const [name, setName] = useState(null)
   const [content, setContent] = useState(null)
   const [currentContent, setCurrentContent] = useState(null)
-  const [id, setId] = useState(null)
 
   useEffect(() => {
     async function setContentList() {
@@ -22,39 +20,30 @@ const AddContent = () => {
   }, []);
 
   async function retrieveContent() {
-    try {
-      const newResponse = await fetch('/content/')
-      const content = await newResponse.json()
-      return content === undefined || content.length === 0 ? 0 : content
-    } catch (err) {
-      console.error(err.message);
-    }
+    const newResponse = await fetch('/content/')
+    const content = await newResponse.json()
+    return content === undefined || content.length === 0 ? 0 : content
   }
 
   async function contentIds() {
     const allContent = await retrieveContent()
-    let ids = []
-    const allContentLength = allContent === undefined || allContent === 0 ? 0 : allContent.length
-      for(let i = 0; i < allContentLength; i++){
-        ids.push(allContent[i].content_id)
-      }
-    const sortedIds = ids.sort((a,b)=> a-b)
-    setId(sortedIds)
+    const sortedIds = allContent.map(content => content.content_id).sort((a,b)=> a-b)
     return sortedIds
   }
 
   async function contentCounter(direction) {
     const ids = await contentIds()
-    const allContent = await retrieveContent()
-    if(direction === "next" && counter <= (id.length-2)) await setCounter(counter+1)
-    if(direction === "previous" && counter > 0) await setCounter(counter-1)
+    if(direction === "next" && counter <= (ids.length-2)) setCounter(counter+1)
+    if(direction === "previous" && counter > 0) setCounter(counter-1)
+    console.log("counter", counter)
   }
 
   async function moveContent(direction) {
-    const contentIds = await contentIds()
-    const counter = await contentCounter(direction)
-    const newResponse = await fetch('/content/'+[contentIds[counter]])
+    const ids = await contentIds()
+    contentCounter(direction)
+    const newResponse = await fetch('/content/'+[ids[counter]])
     const newData = await newResponse.json()
+    console.log("Move content: ids", ids, "ids[counter]", ids[counter], "newResponse", newResponse, "newData", newData)
     setList(newData)
   }
 
@@ -76,8 +65,8 @@ const AddContent = () => {
   }
 
   async function updateContentState() {
-    const contentIds = await contentIds()
-    const newResponse = await fetch('/content/'+[contentIds[counter]])
+    const ids = await contentIds()
+    const newResponse = await fetch('/content/'+[ids[counter]])
     const newData = await newResponse.json()
     setList(newData)
   }
@@ -89,9 +78,10 @@ const AddContent = () => {
   }
 
   const myChangeHandler = (event) => {
-    let contentName = event.target.name;
-    let contentValue = event.target.value;
-    setName([contentName, contentValue]);
+    let header = event.target.name;
+    let body = event.target.value;
+    if(header === 'title') setTitle(body)
+    if(header === 'content') setContent(body)
   }
 
     return (
@@ -103,11 +93,11 @@ const AddContent = () => {
           <br/>
           Date Created: {list === undefined || list.length === 0 ? "-" : list.date_created}
           <br/>
-          <button className="add-button" onClick={()=> moveContent("previous")}>
+          <button className="add-button" onClick={() => moveContent("previous")}>
             Previous Content </button>
-          <button className="add-button" onClick={()=> moveContent("next")}>
+          <button className="add-button" onClick={() => moveContent("next")}>
             Next Content </button>
-          <button className="add-button" onClick={()=> deleteContent()}>
+          <button className="add-button" onClick={() => deleteContent()}>
             Delete Content </button>
             <div className='body-text'>
               Add content

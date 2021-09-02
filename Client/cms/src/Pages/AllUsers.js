@@ -20,7 +20,7 @@ const AllUsers = () => {
       const data = await response.json()
       return data
     } catch (err) {
-      console.error(err.message);
+        console.error(err.message);
     }
   }
 
@@ -35,7 +35,7 @@ const AllUsers = () => {
       const newData = await newResponse.json()
       setList(newData)
     } catch (err) {
-      console.error(err.message);
+        console.error(err.message);
     }
   }
 

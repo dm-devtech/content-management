@@ -1,16 +1,19 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import Footer from '../components/Footer.js'
 
-class AllContent extends Component {
-  // Initialize the state
-  constructor(props){
-    super(props);
-    this.state = {
-      list: []
-    }
-  }
+const AllContent = () => {
+  const [list, setList] = useState("")
 
-  async getContentData() {
+  useEffect(() => {
+    async function setContentList() {
+      const content = await getContentData()
+      setList(content)
+    }
+
+    setContentList()
+  }, []);
+
+  async function getContentData() {
     try {
       const url = '/content/'
       const response = await fetch(url)
@@ -21,7 +24,7 @@ class AllContent extends Component {
     }
   }
 
-  async deleteContent(id) {
+  async function deleteContent(id) {
     try {
       const url = '/content/'
       const response = await fetch(url+id,{
@@ -30,19 +33,12 @@ class AllContent extends Component {
       })
       const newResponse = await fetch(url)
       const newData = await newResponse.json()
-      this.setState({list: newData})
+      setList(newData)
     } catch (err) {
-      console.error(err.message);
+        console.error(err.message);
     }
   }
-  // Fetch the list on first mount
-  async componentDidMount() {
-    const content = await this.getContentData()
-    this.setState({list: content})
-  }
 
-  render() {
-    const {list} = this.state;
     return (
       <div className='Header'>
         Content View
@@ -50,15 +46,15 @@ class AllContent extends Component {
         <div className='body-text'>
         {list === undefined || list.length === 0 ? "No Content" :
         <ul>
-          {list.map(item => (
-            <li key={item.content_id}>
-              Title: {item.title}
+          {list.map(content => (
+            <li key={content.content_id}>
+              Title: {content.title}
               <br/>
-              Content: {item.content}
+              Content: {content.content}
               <br/>
-              Data Created: {item.date_created.toString().slice(0, 10)}
+              Data Created: {content.date_created.toString().slice(0, 10)}
               <br/>
-              <button className="add-button" onClick={()=> this.deleteContent(item.content_id)}>
+              <button className="add-button" onClick={()=> deleteContent(content.content_id)}>
               Delete Content </button>
             </li>
           ))}
@@ -68,6 +64,5 @@ class AllContent extends Component {
       </div>
     );
   }
-}
 
 export default AllContent;
