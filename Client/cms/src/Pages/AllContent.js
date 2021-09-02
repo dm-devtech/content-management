@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Footer from '../components/Footer.js'
+import Footer from './Footer.js'
 
 const AllContent = () => {
   const [list, setList] = useState("")
@@ -40,10 +40,10 @@ const AllContent = () => {
   }
 
     return (
-      <div className='Header'>
+      <div className='h1'>
         Content View
         <br/>
-        <div className='body-text' data-testid='content'>
+        <div className='lead' data-testid='content'>
         {list === undefined || list.length === 0 ? "No Content" :
         <ul>
           {list.map(content => (
@@ -54,7 +54,7 @@ const AllContent = () => {
               <br/>
               Date Created: {content.date_created.toString().slice(0, 10)}
               <br/>
-              <button className="add-button" data-testid='delete-button' onClick={()=> deleteContent(content.content_id)}>
+              <button className="btn btn-outline-dark" data-testid='delete-button' onClick={()=> deleteContent(content.content_id)}>
               Delete Content </button>
             </li>
           ))}

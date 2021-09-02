@@ -6,7 +6,7 @@ import AllContent from './Pages/AllContent';
 import AddContent from './Pages/AddContent';
 import AddUser from './Pages/AddUser';
 import AllUsers from './Pages/AllUsers';
-import Footer from './components/Footer.js'
+import Footer from './Pages/Footer.js'
 
 class App extends Component {
   render() {

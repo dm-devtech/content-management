@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Footer from '../components/Footer.js'
+import Footer from './Footer.js'
 
 const AddContent = () => {
   const [list, setList] = useState([])
@@ -10,7 +10,7 @@ const AddContent = () => {
 
   useEffect(() => {
     async function setContentList() {
-      const content = await retrieveContent()
+      const content = await retrieveContent() === undefined ? [] : await retrieveContent()
       const ids = await contentIds()
       setList(content[0])
       setCurrentContent(ids[0])
@@ -30,7 +30,7 @@ const AddContent = () => {
   }
 
   async function contentIds() {
-    const allContent = await retrieveContent()
+    const allContent = await retrieveContent() === undefined ? [] : await retrieveContent()
     const sortedIds = allContent.map(content => content.content_id).sort((a,b)=> a-b)
     return sortedIds
   }
@@ -87,43 +87,42 @@ const AddContent = () => {
   }
 
     return (
-      <div className='Header'> Content View
-        <div className='body-text' data-testid='info'>
+      <div className="h1"> Content View
+        <div className='lead' data-testid='info'>
           Title: {list === undefined || list.length === 0 ? "-" : list.title}
           <br/>
           Content: {list === undefined || list.length === 0 ? "-" : list.content}
           <br/>
           Date Created: {list === undefined || list.length === 0 ? "-" : list.date_created.toString().slice(0, 10)}
           <br/>
-          <button className="add-button" onClick={() => moveContent("previous")}>
+          <button className="btn btn-outline-dark" onClick={() => moveContent("previous")}>
             Previous Content </button>
-          <button className="add-button" onClick={() => moveContent("next")}>
+          <button className="btn btn-outline-dark" onClick={() => moveContent("next")}>
             Next Content </button>
-          <button className="add-button" onClick={() => deleteContent()}>
+          <button className="btn btn-outline-dark" onClick={() => deleteContent()}>
             Delete Content </button>
-            <div className='body-text'>
+            <br />
+            <div className='h1'>
               Add content
               <form onSubmit={mySubmitHandler}>
-                <p>Enter Content Title:</p>
+                <p className='lead'>Enter Content Title:</p>
                 <textarea
                   name='title'
                   data-testid="title"
                   onChange={myChangeHandler}
                   style={{width: "250px"}}
                 />
-                <p>Enter Content Body:</p>
+                <p className='lead'>Enter Content Body:</p>
                 <textarea
                   name='content'
                   data-testid="body"
                   onChange={myChangeHandler}
                   style={{width: "250px", height: "80px"}}
                 />
-                <br/>
-                <br/>
                 <input
                   type='submit'
+                  className="btn btn-outline-dark"
                   data-testid="Submit"
-                  className="add-button"
                 />
               </form>
             </div>

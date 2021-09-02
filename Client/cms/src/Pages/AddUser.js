@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import Footer from '../components/Footer.js'
+import Footer from './Footer.js'
 
 const AddUser = () => {
   const [list, setList] = useState([])
@@ -11,7 +11,7 @@ const AddUser = () => {
 
   useEffect(() => {
     async function setUserList() {
-      const users = await retrieveUsers()
+      const users = await retrieveUsers() === undefined ? [] : await retrieveUsers()
       const ids = await userIds()
       setList(users[0])
       setCurrentUser(ids[0])
@@ -31,7 +31,7 @@ const AddUser = () => {
   }
 
   async function userIds() {
-    const allUsers = await retrieveUsers()
+    const allUsers = await retrieveUsers() === undefined ? [] : await retrieveUsers()
     const sortedIds = allUsers.map(user => user.user_id).sort((a,b)=> a-b)
     return sortedIds
   }
@@ -89,47 +89,47 @@ const AddUser = () => {
   }
 
     return (
-      <div className='Header'> User View
-        <div className='body-text'>
+      <div className='h1'> User View
+        <div className='lead'>
           User Email: {list === undefined || list.length === 0 ? "-" : list.email}
           <br/>
           User Role: {list === undefined || list.length === 0 ? "-" : list.role}
           <br/>
           Date Created: {list === undefined || list.length === 0 ? "-" : list.date_created.toString().slice(0, 10)}
           <br/>
-          <button className="add-button" onClick={() => switchUser("previous")}>
+          <button className="btn btn-outline-dark" onClick={() => switchUser("previous")}>
             Previous User </button>
-          <button className="add-button" onClick={() => switchUser("next")}>
+          <button className="btn btn-outline-dark" onClick={() => switchUser("next")}>
             Next User </button>
-          <button className="add-button" onClick={() => deleteUser()}>
+          <button className="btn btn-outline-dark" onClick={() => deleteUser()}>
             Delete User </button>
-            <div className='body-text'>
+            <div className='h1'>
               Add User
               <form onSubmit={mySubmitHandler}>
-                <p>Enter User Email:</p>
+                <p className='lead'>Enter User Email:</p>
                   <textarea
                     name='email'
                     onChange={myChangeHandler}
-                    style={{width: "200px"}}
+                    style={{width: "220px", height: "35px"}}
                   />
                 <p>Enter User Password:</p>
                   <input
                     name='password'
                     type='password'
                     onChange={myChangeHandler}
-                    style={{width: "200px"}}
+                    style={{width: "220px", height: "35px"}}
                   />
                 <p>Enter User Role:</p>
                   <textarea
                     name='role'
                     onChange={myChangeHandler}
-                    style={{width: "200px"}}
+                    style={{width: "220px", height: "35px"}}
                   />
                 <br/>
                   <input
                     type='submit'
                     data-testid='Submit'
-                    className='add-button'
+                    className="btn btn-outline-dark"
                   />
               </form>
             </div>

@@ -36,3 +36,18 @@
     transform: rotate(360deg);
   }
 }
+
+.btn, .btn-outline-secondary {
+  margin-right: 10px;
+  margin-top: 10px;
+}
+
+.lead {
+  margin-top: 20px;
+  font-size: 14px;
+  color: #282c34;
+}
+
+.h1 {
+  margin-top: 10px;
+}
