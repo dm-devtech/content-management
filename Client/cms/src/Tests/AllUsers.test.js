@@ -20,9 +20,9 @@ describe('test all Users view', () => {
     expect(title).toBeInTheDocument();
   });
 
-  test('data is retrieved when page loads', () => {
+  test.only('data is retrieved when page loads', () => {
     const spy = jest.spyOn(AllUsers.prototype, 'getUserData')
-    const { getByText } = render(<AllUsers/>, { wrapper: BrowserRouter });
+    const { getByText } = render(<AllUsers/>);
     expect(spy).toHaveBeenCalled();
     AllUsers.prototype.getUserData.mockRestore();
   });

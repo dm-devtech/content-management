@@ -93,7 +93,7 @@ const AddContent = () => {
           <br/>
           Content: {list === undefined || list.length === 0 ? "-" : list.content}
           <br/>
-          Date Created: {list === undefined || list.length === 0 ? "-" : list.date_created}
+          Date Created: {list === undefined || list.length === 0 ? "-" : list.date_created.toString().slice(0, 10)}
           <br/>
           <button className="add-button" onClick={() => moveContent("previous")}>
             Previous Content </button>

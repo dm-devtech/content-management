@@ -1,13 +1,14 @@
 ## Content Management System
+A React App to manage content and users
 
 ### To run the CMS
 1. Clone the Git repo to your local directory
 2. Move to the root directory and run ```npm install```
 3. Ensure postgres is installed, then create a postgres user with database creation permissions.
 4. Create the databases, extensions and tables as per the instructions [here](db-schema.sql)
-5. Create .env file with variables PG_USER, PG_PASSWORD (use the credentials for the postgres user set up in step 4), PORT (use pg default port) and
-NODE_ENV=production
+5. Create .env file with variables PG_USER, PG_PASSWORD (use the credentials for the postgres user set up in step 4), PORT (use pg default port) and NODE_ENV=production
 6. To run the app go to the parent directory and run ```npm start```
+7. Go to localhost:3002 in your web browser
 
 ### Screenshots
 ![home](Screenshots/Homepage.JPG)
@@ -45,30 +46,3 @@ NB. Frameworks chosen due to some previous experience of each.
 - CSS styling.
 - Edge cases considered e.g. app continues when no data in database, broken number sequence of record ids due to data deletion guarded against when cycling through records, input form text box size variability using text area.   
 - Styled with a focus on mobile view as shown in screenshots above.  
-
-#### Improvements required:
-- Authentication.  This was attempted but dropped due to issues with linking chosen authentication provider to users' table.
-- Further refactoring to clean up code and remove repetition.
-- Update React syntax.
-- More in depth front end testing and full integration testing.
-- Improve the CSS styling to be more visually appealing.
-- Functionality to amend records (this was adue to time).
-- Make dates more readable (this was attempted but dropped due to issues and time).
-
-#### Time Spent
-- 1 week
-
-### Restful APIs
-- Content
-  - GET /content/:id (get one content post)
-  - GET /content/ (get all content)
-  - POST /content/add (add one content post)
-  - PUT /content/:id (update one content post)
-  - DELETE /content/:id (delete one content post)
-
-- Users
-  - GET /users/:id (get one user record)
-  - GET /users/ (get all users)
-  - POST /users/add (add one user record)
-  - PUT /users/:id (update one user record)
-  - DELETE /users/:id (delete one user record)

@@ -95,7 +95,7 @@ const AddUser = () => {
           <br/>
           User Role: {list === undefined || list.length === 0 ? "-" : list.role}
           <br/>
-          Date Created: {list === undefined || list.length === 0 ? "-" : list.date_created}
+          Date Created: {list === undefined || list.length === 0 ? "-" : list.date_created.toString().slice(0, 10)}
           <br/>
           <button className="add-button" onClick={() => switchUser("previous")}>
             Previous User </button>
