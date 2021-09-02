@@ -25,17 +25,29 @@ File         | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s
 All files    |   91.78 |    95.45 |     100 |   91.78 |
  database.js |     100 |       50 |     100 |     100 | 9
  index.js    |   91.18 |      100 |     100 |   91.18 | 20,32,75,89,101,144
-
+ 
+- React Front end coverage
+File            | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s
+----------------|---------|----------|---------|---------|---------------------------------
+All files       |   48.19 |    41.94 |   50.94 |   52.29 | 
+ src            |     100 |      100 |     100 |     100 | 
+  App.js        |     100 |      100 |     100 |     100 | 
+ src/Pages      |   46.58 |    41.94 |      48 |   50.68 | 
+  AddContent.js |   25.45 |    32.14 |   23.53 |   28.57 | 14-16,25-73,77-79,83-86,98-102 
+  AddUser.js    |   25.86 |    34.62 |   23.53 |   29.41 | 15-17,26-74,78-80,84-88,100-104
+  AllContent.js |   95.45 |      100 |     100 |   95.45 | 38
+  AllUsers.js   |   95.45 |      100 |     100 |   95.45 | 38
+  Home.js       |     100 |      100 |     100 |     100 | 
+ src/components |     100 |      100 |     100 |     100 | 
+  Footer.js     |     100 |      100 |     100 |     100 | 
 
 ### Tech used:
-- Express for APIs
+- Express used for the back end APIs
 - Postgres for the database
   - Postgres extension pgcrypto for encryption
 - Jest to test back end
 - React for the front end (create-react-app)
 - Jest/React Testing Library to test the front end
-
-NB. Frameworks chosen due to some previous experience of each.  
 
 ### Project Summary
 #### Functionality included:
@@ -46,3 +58,6 @@ NB. Frameworks chosen due to some previous experience of each.
 - CSS styling.
 - Edge cases considered e.g. app continues when no data in database, broken number sequence of record ids due to data deletion guarded against when cycling through records, input form text box size variability using text area.   
 - Styled with a focus on mobile view as shown in screenshots above.  
+
+#### Areas for improvement:
+- Fix tests for front end

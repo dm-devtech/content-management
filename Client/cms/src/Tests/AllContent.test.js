@@ -45,7 +45,7 @@ describe('test all content view', () => {
     await waitFor(() => expect(screen.getByTestId('content')).toHaveTextContent("Date Created: 2021-09-03"))
   })
 
-  test.only('deleting record', async () => {
+  test('deleting record', async () => {
     const fakeApi = [{title:"test header", content:"test body", date_created:"2021-09-03"}]
 
     const fetchSpy = jest.spyOn(window, 'fetch').mockImplementation(() => {
