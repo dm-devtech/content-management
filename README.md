@@ -1,6 +1,14 @@
 ## Content Management System
 A React App to manage content and users
 
+### Tech used:
+- Express used for the back end APIs
+- Postgres for the database
+  - Postgres extension pgcrypto for encryption
+- React for the front end (create-react-app)
+- Jest/React Testing Library used for testing
+- Bootstrap used for styling
+
 ### To run the CMS
 1. Clone the Git repo to your local directory
 2. Move to the root directory and run ```npm install```
@@ -9,13 +17,6 @@ A React App to manage content and users
 5. Create .env file with variables PG_USER, PG_PASSWORD (use the credentials for the postgres user set up in step 4), PORT (use pg default port) and NODE_ENV=production
 6. To run the app go to the parent directory and run ```npm start```
 7. Go to localhost:3002 in your web browser
-
-### Screenshots
-![home](Screenshots/Homepage.JPG)
-![AddContent](Screenshots/AddContent.JPG)
-![AllContent](Screenshots/AllContent.JPG)
-![AddUsers](Screenshots/AddUser.JPG)
-![AllUsers](Screenshots/AllUsers.JPG)
 
 ##### Tests
 - Express API back end test coverage:
@@ -40,14 +41,6 @@ All files       |   48.19 |    41.94 |   50.94 |   52.29 |
   Home.js       |     100 |      100 |     100 |     100 | 
  src/components |     100 |      100 |     100 |     100 | 
   Footer.js     |     100 |      100 |     100 |     100 | 
-
-### Tech used:
-- Express used for the back end APIs
-- Postgres for the database
-  - Postgres extension pgcrypto for encryption
-- Jest to test back end
-- React for the front end (create-react-app)
-- Jest/React Testing Library to test the front end
 
 ### Project Summary
 #### Functionality included:
