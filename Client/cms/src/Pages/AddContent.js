@@ -93,7 +93,7 @@ const AddContent = () => {
           <br/>
           Content: {list === undefined || list.length === 0 ? "-" : list.content}
           <br/>
-          Date Created: {list === undefined || list.length === 0 ? "-" : list.date_created.toString().slice(0, 10)}
+          Date Created: {list === undefined || list.length === 0 ? "-" : list.date_created}
           <br/>
           <button className="btn btn-outline-dark" onClick={() => moveContent("previous")}>
             Previous Content </button>
@@ -107,6 +107,7 @@ const AddContent = () => {
               <form onSubmit={mySubmitHandler}>
                 <p className='lead'>Enter Content Title:</p>
                 <textarea
+                  class="mb-0"
                   name='title'
                   data-testid="title"
                   onChange={myChangeHandler}
@@ -114,11 +115,13 @@ const AddContent = () => {
                 />
                 <p className='lead'>Enter Content Body:</p>
                 <textarea
+                  class="mb-0"
                   name='content'
                   data-testid="body"
                   onChange={myChangeHandler}
                   style={{width: "250px", height: "80px"}}
                 />
+                <br />
                 <input
                   type='submit'
                   className="btn btn-outline-dark"

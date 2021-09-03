@@ -45,7 +45,7 @@ const AllContent = () => {
         <br/>
         <div className='lead' data-testid='content'>
         {list === undefined || list.length === 0 ? "No Content" :
-        <ul>
+        <ul >
           {list.map(content => (
             <li key={content.content_id}>
               Title: {content.title}

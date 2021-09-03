@@ -31,6 +31,8 @@ const Home = ({props}) =>
           Add User
         </LinkButton>
       </div>
+      <br />
+      <h1 class="h6">© David Millen 2021</h1>
     </div>
     );
 

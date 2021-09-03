@@ -11,7 +11,7 @@ const AddUser = () => {
 
   useEffect(() => {
     async function setUserList() {
-      const users = await retrieveUsers() === undefined ? [] : await retrieveUsers()
+      const users = await retrieveUsers() 
       const ids = await userIds()
       setList(users[0])
       setCurrentUser(ids[0])
@@ -31,7 +31,7 @@ const AddUser = () => {
   }
 
   async function userIds() {
-    const allUsers = await retrieveUsers() === undefined ? [] : await retrieveUsers()
+    const allUsers = await retrieveUsers()
     const sortedIds = allUsers.map(user => user.user_id).sort((a,b)=> a-b)
     return sortedIds
   }
@@ -95,7 +95,7 @@ const AddUser = () => {
           <br/>
           User Role: {list === undefined || list.length === 0 ? "-" : list.role}
           <br/>
-          Date Created: {list === undefined || list.length === 0 ? "-" : list.date_created.toString().slice(0, 10)}
+          Date Created: {list === undefined || list.length === 0 ? "-" : list.date_created}
           <br/>
           <button className="btn btn-outline-dark" onClick={() => switchUser("previous")}>
             Previous User </button>
@@ -108,19 +108,22 @@ const AddUser = () => {
               <form onSubmit={mySubmitHandler}>
                 <p className='lead'>Enter User Email:</p>
                   <textarea
+                    class="mb-0"
                     name='email'
                     onChange={myChangeHandler}
                     style={{width: "220px", height: "35px"}}
                   />
-                <p>Enter User Password:</p>
-                  <input
+                <p className='lead'>Enter User Password:</p>
+                  <textarea
+                    class="mb-0"
                     name='password'
                     type='password'
                     onChange={myChangeHandler}
                     style={{width: "220px", height: "35px"}}
                   />
-                <p>Enter User Role:</p>
+                <p className='lead'>Enter User Role:</p>
                   <textarea
+                    class="mb-0"
                     name='role'
                     onChange={myChangeHandler}
                     style={{width: "220px", height: "35px"}}

@@ -47,12 +47,13 @@ const AllUsers = () => {
         {list === undefined || list.length === 0 ? "No Users" :
         <ul>
         {list.map(user => (
-          <li key={user.user_id}>
+          <li key={user.user_id} >
             User email: {user.email}
             <br/>
              User Role: {user.role}
              <br/>
               Date Created: {user.date_created.toString().slice(0,10)}
+              <br />
               <button data-testid="delete-button" className="btn btn-outline-dark" onClick={() => deleteUser(user.user_id)}>
               Delete User </button>
             </li>
