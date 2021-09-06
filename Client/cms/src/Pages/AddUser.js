@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import Footer from './Footer.js'
+import getAllUsers from '../Helpers/getAllUsers'
+import getUserById from '../Helpers/getUserById'
+import deleteUser from '../Helpers/deleteUser'
+import postUser from '../Helpers/postUser'
 
 const AddUser = () => {
   const [list, setList] = useState([])
-  const [counter, setCounter] = useState(1)
+  const [counter, setCounter] = useState(0)
   const [email, setEmail] = useState(null)
   const [password, setPassword] = useState(null)
   const [role, setRole] = useState(null)
@@ -11,8 +15,8 @@ const AddUser = () => {
 
   useEffect(() => {
     async function setUserList() {
-      const users = await retrieveUsers() 
-      const ids = await userIds()
+      const users = await getAllUsers() === undefined ? [] : await getAllUsers()
+      const ids = await getUserIds()
       setList(users[0])
       setCurrentUser(ids[0])
     }
@@ -20,58 +24,43 @@ const AddUser = () => {
     setUserList()
   }, []);
 
-  async function retrieveUsers() {
-    try {
-      const newResponse = await fetch('/users/')
-      const users = await newResponse.json()
-      return users
-    } catch (err) {
-      console.error(err.message);
-    }
-  }
-
-  async function userIds() {
-    const allUsers = await retrieveUsers()
+  async function getUserIds() {
+    const allUsers = await getAllUsers() === undefined ? [] : await getAllUsers()
     const sortedIds = allUsers.map(user => user.user_id).sort((a,b)=> a-b)
     return sortedIds
   }
 
   async function userCounter(direction) {
-    const ids = await userIds()
+    const ids = await getUserIds()
     if(direction === "next" && counter <= (ids.length-2)) await setCounter(counter + 1)
     if(direction === "previous" && counter > 0) await setCounter(counter - 1)
   }
 
   async function switchUser(direction) {
-    const ids = await userIds()
-    userCounter(direction)
-    const newResponse = await fetch('/users/'+[ids[counter]])
-    const newData = await newResponse.json()
-    setList(newData)
+    const ids = await getUserIds()
+    await userCounter(direction)
+    const currentUserId = ids[counter]
+    const updatedUser = await getUserById(currentUserId)
+    setList(updatedUser)
   }
 
-  async function deleteUser() {
-    const deleteResponse = await fetch('/users/'+currentUser,{
-      method:'DELETE',
-      header:{'Accept':'application/json', 'Content-Type':'application/json'}
-    })
-    await updateUserState()
+  async function removeUser() {
+    const ids = await getUserIds()
+    const currentUserId = ids[counter]
+    await deleteUser(currentUserId)
+    await updateUsers()
   }
 
   async function addNewUser() {
-    const addUser = await fetch('/users/add',{
-      method:'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({email: email, password: password, role: role, date_created: 'NOW()'})
-    })
-    updateUserState()
+    await postUser(email, password, role)
+    await updateUsers()
   }
  
-  async function updateUserState() {
-    const ids = await userIds()
-    const newResponse = await fetch('/users/'+[ids[counter]])
-    const newData = await newResponse.json()
-    setList(newData)
+  async function updateUsers() {
+    const ids = await getUserIds()
+    const currentUserId = ids[counter]
+    const updatedUsers = await getUserById(currentUserId)
+    await setList(updatedUsers)
   }
 
   const mySubmitHandler = (event) => {
@@ -101,7 +90,7 @@ const AddUser = () => {
             Previous User </button>
           <button className="btn btn-outline-dark" onClick={() => switchUser("next")}>
             Next User </button>
-          <button className="btn btn-outline-dark" onClick={() => deleteUser()}>
+          <button className="btn btn-outline-dark" onClick={() => removeUser()}>
             Delete User </button>
             <div className='h1'>
               Add User

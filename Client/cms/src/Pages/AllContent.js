@@ -9,7 +9,6 @@ const AllContent = () => {
   useEffect(() => {
     async function setContentList() {
       const content = await getAllContent()
-      console.log("use effect", content)
       setList(content)
     }
 

@@ -15,7 +15,7 @@ const AddContent = () => {
   useEffect(() => {
     async function setContentList() {
       const content = await getAllContent() === undefined ? [] : await getAllContent()
-      const ids = await contentIds()
+      const ids = await getContentIds()
       await setList(content[0])
       await setCurrentContent(ids[0])
     }
@@ -23,21 +23,20 @@ const AddContent = () => {
     setContentList()
   }, []);
 
-  async function contentIds() {
+  async function getContentIds() {
     const allContent = await getAllContent() === undefined ? [] : await getAllContent()
     const sortedIds = allContent.map(content => content.content_id).sort((a,b)=> a-b)
     return sortedIds
   }
 
   async function contentCounter(direction) {
-    const ids = await contentIds()
+    const ids = await getContentIds()
     if(direction === "next" && counter <= (ids.length-2)) setCounter(counter + 1)
     if(direction === "previous" && counter > 0) setCounter(counter - 1)
-    console.log("counter", counter)
   }
 
   async function moveContent(direction) {
-    const ids = await contentIds()
+    const ids = await getContentIds()
     await contentCounter(direction)
     const currentContentId = ids[counter]
     const updatedContent = await getContentById(currentContentId)
@@ -45,9 +44,8 @@ const AddContent = () => {
   }
 
   async function removeContent() {
-    const ids = await contentIds()
+    const ids = await getContentIds()
     const currentContentId = ids[counter]
-    console.log("ids", ids, "currentContentID", currentContentId, "delete counter", counter)
     await deleteContent(currentContentId)
     await updateContentState()
   }
@@ -58,7 +56,7 @@ const AddContent = () => {
   }
 
   async function updateContentState() {
-    const ids = await contentIds()
+    const ids = await getContentIds()
     const currentContentId = ids[counter]
     const updatedContent = await getContentById(currentContentId)
     await setList(updatedContent)

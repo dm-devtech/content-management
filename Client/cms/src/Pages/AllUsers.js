@@ -1,42 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import Footer from './Footer.js'
+import getAllUsers from '../Helpers/getAllUsers'
+import deleteUser from '../Helpers/deleteUser'
 
 const AllUsers = () => {
   const [list, setList] = useState("")
 
   useEffect(() => {
     async function setUserList() {
-      const content = await getUserData()
+      const content = await getAllUsers()
       setList(content)
     }
 
     setUserList()
   }, []);
 
-  async function getUserData() {
-    try {
-      const url = '/users/'
-      const response = await fetch(url)
-      const data = await response.json()
-      return data
-    } catch (err) {
-        console.error(err.message);
-    }
-  }
-
-  async function deleteUser(id) {
-    try {
-      const url = '/users/'
-      const response = await fetch(url+id,{
-        method:'DELETE',
-        header:{'Accept':'application/json', 'Content-Type':'application/json'}
-      })
-      const newResponse = await fetch(url)
-      const newData = await newResponse.json()
-      setList(newData)
-    } catch (err) {
-        console.error(err.message);
-    }
+  async function removeUser(id) {
+    await deleteUser(id) 
+    const updatedUsers = await getAllUsers()
+    setList(updatedUsers)
   }
 
     return (
@@ -44,7 +26,7 @@ const AllUsers = () => {
         User View
         <br/>
           <div className='lead' data-testid="user" >
-        {list === undefined || list.length === 0 ? "No Users" :
+        {list === undefined || list.length === 0 || list === 0 ? "No Users" :
         <ul>
         {list.map(user => (
           <li key={user.user_id} >
@@ -54,7 +36,7 @@ const AllUsers = () => {
              <br/>
               Date Created: {user.date_created.toString().slice(0,10)}
               <br />
-              <button data-testid="delete-button" className="btn btn-outline-dark" onClick={() => deleteUser(user.user_id)}>
+              <button data-testid="delete-button" className="btn btn-outline-dark" onClick={() => removeUser(user.user_id)}>
               Delete User </button>
             </li>
           ))}

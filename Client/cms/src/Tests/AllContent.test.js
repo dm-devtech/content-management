@@ -2,14 +2,8 @@ import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import { BrowserRouter } from "react-router-dom";
 import App from '../App';
 import AllContent from '../Pages/AllContent';
-jest.mock('../Helpers/deleteContent');
-import deleteContent from '../Helpers/deleteContent';
 jest.mock('../Helpers/getAllContent');
 import getAllContent from '../Helpers/getAllContent';
-jest.mock('../Helpers/getContentById');
-import getContentById from '../Helpers/getContentById';
-jest.mock('../Helpers/postContent');
-import postContent from '../Helpers/postContent';
 
 describe('test all content view', () => {
   test('renders without crashing', () => {
