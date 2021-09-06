@@ -2,6 +2,14 @@ import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import { BrowserRouter } from "react-router-dom";
 import App from '../App';
 import AllContent from '../Pages/AllContent';
+jest.mock('../Helpers/deleteContent');
+import deleteContent from '../Helpers/deleteContent';
+jest.mock('../Helpers/getAllContent');
+import getAllContent from '../Helpers/getAllContent';
+jest.mock('../Helpers/getContentById');
+import getContentById from '../Helpers/getContentById';
+jest.mock('../Helpers/postContent');
+import postContent from '../Helpers/postContent';
 
 describe('test all content view', () => {
   test('renders without crashing', () => {
@@ -26,16 +34,7 @@ describe('test all content view', () => {
   });
 
   test('adding content', async () => {
-    const fakeApi = [{title:"test header", content:"test body", date_created:"2021-09-03"}]
-
-    const fetchSpy = jest.spyOn(window, 'fetch').mockImplementation(() => {
-      const fetchResponse = {
-        ok: true,
-        json: () => Promise.resolve(fakeApi),
-        status: 200
-      };
-      return Promise.resolve(fetchResponse);
-    })
+    getAllContent.mockImplementation(() => [{title:"test header", content:"test body", date_created:"2021-09-03"}])
 
     const {getByTestId} = render(<AllContent/>, { wrapper: BrowserRouter })
     const user = getByTestId('content')
@@ -46,16 +45,7 @@ describe('test all content view', () => {
   })
 
   test('deleting record', async () => {
-    const fakeApi = [{title:"test header", content:"test body", date_created:"2021-09-03"}]
-
-    const fetchSpy = jest.spyOn(window, 'fetch').mockImplementation(() => {
-      const fetchResponse = {
-        ok: true,
-        json: () => Promise.resolve(fakeApi),
-        status: 200
-      };
-      return Promise.resolve(fetchResponse);
-    })
+    getAllContent.mockImplementation(() => [{title:"test header", content:"test body", date_created:"2021-09-03"}])
 
     const {getByTestId} = render(<AllContent/>, { wrapper: BrowserRouter })
     const user = getByTestId('content')

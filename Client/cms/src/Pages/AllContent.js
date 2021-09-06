@@ -1,42 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import Footer from './Footer.js'
+import getAllContent from '../Helpers/getAllContent'
+import deleteContent from '../Helpers/deleteContent'
 
 const AllContent = () => {
   const [list, setList] = useState("")
 
   useEffect(() => {
     async function setContentList() {
-      const content = await getContentData()
+      const content = await getAllContent()
+      console.log("use effect", content)
       setList(content)
     }
 
     setContentList()
   }, []);
 
-  async function getContentData() {
-    try {
-      const url = '/content/'
-      const response = await fetch(url)
-      const data = await response.json()
-      return data
-    } catch (err) {
-      console.error(err.message);
-    }
-  }
-
-  async function deleteContent(id) {
-    try {
-      const url = '/content/'
-      const response = await fetch(url+id,{
-        method:'DELETE',
-        header:{'Accept':'application/json', 'Content-Type':'application/json'}
-      })
-      const newResponse = await fetch(url)
-      const newData = await newResponse.json()
-      setList(newData)
-    } catch (err) {
-        console.error(err.message);
-    }
+  async function removeContent(id) {
+    await deleteContent(id) 
+    const updatedContent = await getAllContent()
+    console.log("delete content then updated content:", updatedContent)
+    setList(updatedContent)
   }
 
     return (
@@ -44,7 +28,7 @@ const AllContent = () => {
         Content View
         <br/>
         <div className='lead' data-testid='content'>
-        {list === undefined || list.length === 0 ? "No Content" :
+        {list === undefined || list.length === 0 || list === 0  ? "No Content" :
         <ul >
           {list.map(content => (
             <li key={content.content_id}>
@@ -52,9 +36,9 @@ const AllContent = () => {
               <br/>
               Content: {content.content}
               <br/>
-              Date Created: {content.date_created.toString().slice(0, 10)}
+              Date Created: {content.date_created}
               <br/>
-              <button className="btn btn-outline-dark" data-testid='delete-button' onClick={()=> deleteContent(content.content_id)}>
+              <button className="btn btn-outline-dark" data-testid='delete-button' onClick={()=> removeContent(content.content_id)}>
               Delete Content </button>
             </li>
           ))}

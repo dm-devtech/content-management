@@ -2,6 +2,14 @@ import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter } from "react-router-dom";
 import AddContent from '../Pages/AddContent';
+jest.mock('../Helpers/deleteContent');
+import deleteContent from '../Helpers/deleteContent';
+jest.mock('../Helpers/getAllContent');
+import getAllContent from '../Helpers/getAllContent';
+jest.mock('../Helpers/getContentById');
+import getContentById from '../Helpers/getContentById';
+jest.mock('../Helpers/postContent');
+import postContent from '../Helpers/postContent';
 
 describe('<AddContent />', () => {
   test('renders without crashing', () => {
