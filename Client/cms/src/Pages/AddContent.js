@@ -77,18 +77,20 @@ const AddContent = () => {
 
     return (
       <div className="h1"> Content View
-        <div className='lead' data-testid='info'>
+        <div className='lead' data-testid='header-title'>
           Title: {list === undefined || list.length === 0 ? "-" : list.title}
           <br/>
+          <div className='lead' data-testid='header-body'>
           Content: {list === undefined || list.length === 0 ? "-" : list.content}
           <br/>
+          <div className='lead' data-testid='header-date'>
           Date Created: {list === undefined || list.length === 0 ? "-" : list.date_created}
           <br/>
-          <button className="btn btn-outline-dark" onClick={() => moveContent("previous")}>
+          <button className="btn btn-outline-dark" data-testid='previous-button' onClick={() => moveContent("previous")}>
             Previous Content </button>
-          <button className="btn btn-outline-dark" onClick={() => moveContent("next")}>
+          <button className="btn btn-outline-dark" data-testid='next-button' onClick={() => moveContent("next")}>
             Next Content </button>
-          <button className="btn btn-outline-dark" onClick={() => removeContent()}>
+          <button className="btn btn-outline-dark" data-testid='delete-button' onClick={() => removeContent()}>
             Delete Content </button>
             <br />
             <div className='h1'>
@@ -116,7 +118,9 @@ const AddContent = () => {
                   className="btn btn-outline-dark"
                   data-testid="Submit"
                 />
-              </form>
+               </form>
+               </div>
+              </div>
             </div>
         </div>
         <Footer/>
