@@ -80,17 +80,20 @@ const AddUser = () => {
     return (
       <div className='h1'> User View
         <div className='lead'>
+         <div className='lead' data-testid='user-email'>
           User Email: {list === undefined || list.length === 0 ? "-" : list.email}
           <br/>
+          <div className='lead' data-testid='user-role'>
           User Role: {list === undefined || list.length === 0 ? "-" : list.role}
           <br/>
+          <div className='lead' data-testid='user-date'>
           Date Created: {list === undefined || list.length === 0 ? "-" : list.date_created}
           <br/>
-          <button className="btn btn-outline-dark" onClick={() => switchUser("previous")}>
+          <button className="btn btn-outline-dark" data-testid='previous-user' onClick={() => switchUser("previous")}>
             Previous User </button>
-          <button className="btn btn-outline-dark" onClick={() => switchUser("next")}>
+          <button className="btn btn-outline-dark" data-testid='next-user' onClick={() => switchUser("next")}>
             Next User </button>
-          <button className="btn btn-outline-dark" onClick={() => removeUser()}>
+          <button className="btn btn-outline-dark" data-testid='delete-user' onClick={() => removeUser()}>
             Delete User </button>
             <div className='h1'>
               Add User
@@ -125,8 +128,11 @@ const AddUser = () => {
                   />
               </form>
             </div>
+            </div>
+            </div>
         </div>
         <Footer />
+      </div>
       </div>
     );
   }

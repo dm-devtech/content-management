@@ -21,7 +21,7 @@ describe('<AddContent />', () => {
     expect(getByText("Content View")).toBeInTheDocument();
   });
 
-  test('Home button exists', () => {
+  test('Home button reroutes to home', () => {
     const {getByText} = render(<AddContent/>, { wrapper: BrowserRouter })
     expect(getByText("Home")).toBeInTheDocument();
   });
@@ -30,22 +30,20 @@ describe('<AddContent />', () => {
     getAllContent.mockImplementation(() => [{title:"test header", content:"test body", date_created:"2021-09-03"}])
 
     const {getByTestId} = render(<AddContent/>, { wrapper: BrowserRouter })
-    const user = getByTestId('info')
 
-    await waitFor(() => expect(screen.getByTestId('info')).toHaveTextContent("Title: test header"))
-    await waitFor(() => expect(screen.getByTestId('info')).toHaveTextContent("Content: test body"))
-    await waitFor(() => expect(screen.getByTestId('info')).toHaveTextContent("Date Created: 2021-09-03"))
+    await waitFor(() => expect(screen.getByTestId('header-title')).toHaveTextContent("Title: test header"))
+    await waitFor(() => expect(screen.getByTestId('header-body')).toHaveTextContent("Content: test body"))
+    await waitFor(() => expect(screen.getByTestId('header-date')).toHaveTextContent("Date Created: 2021-09-03"))
   })
 
   test('testing undefined response', async () => {
     getAllContent.mockImplementation(() => undefined)
 
     const {getByTestId} = render(<AddContent/>, { wrapper: BrowserRouter })
-    const user = getByTestId('info')
 
-    await waitFor(() => expect(screen.getByTestId('info')).toHaveTextContent("Title: -"))
-    await waitFor(() => expect(screen.getByTestId('info')).toHaveTextContent("Content: -"))
-    await waitFor(() => expect(screen.getByTestId('info')).toHaveTextContent("Date Created: -"))
+    await waitFor(() => expect(screen.getByTestId('header-title')).toHaveTextContent("Title: -"))
+    await waitFor(() => expect(screen.getByTestId('header-body')).toHaveTextContent("Content: -"))
+    await waitFor(() => expect(screen.getByTestId('header-date')).toHaveTextContent("Date Created: -"))
   })
 
    test('testing deleting content', async () => {
@@ -70,16 +68,16 @@ describe('<AddContent />', () => {
     await waitFor(() => expect(date).toBeInTheDocument())
   })
 
-  // test.only('testing deleting content', async () => {
-  //   retrieveUserData.mockImplementation(() => 1)
+  test('testing adding content calls post and get', async () => {
+    getAllContent.mockImplementation(() => [{title:"test header 1", content:"test body 1", date_created:"2021-09-01"}, {title:"test header 2", content:"test body 2", date_created:"2021-09-02"}])
+    postContent.mockImplementation(() => {} )
+    const { getByTestId } = render(<AddContent/>, { wrapper: BrowserRouter });
+    const submitButton = getByTestId("Submit")
 
-  //   const { getByText, getByTestId } = render(<Home />);
-  //   const submitButton = getByTestId("Submit")
+    fireEvent.click(submitButton);
 
-  //   fireEvent.change(getByTestId("input-field"), { target: { value: 'otherUser' } });
-  //   fireEvent.click(submitButton);
-
-  //   await waitFor(() => expect(getByTestId("")).toBeInTheDocument())
-  // })
+    expect(postContent.mock.calls.length).toBe(1);
+    expect(getAllContent.mock.calls.length).toBe(1);
+  })
 
 })

@@ -87,11 +87,11 @@ const AddContent = () => {
           Date Created: {list === undefined || list.length === 0 ? "-" : list.date_created}
           <br/>
           <button className="btn btn-outline-dark" data-testid='previous-button' onClick={() => moveContent("previous")}>
-            Previous Content </button>
+            Previous Content</button>
           <button className="btn btn-outline-dark" data-testid='next-button' onClick={() => moveContent("next")}>
-            Next Content </button>
+            Next Content</button>
           <button className="btn btn-outline-dark" data-testid='delete-button' onClick={() => removeContent()}>
-            Delete Content </button>
+            Delete Content</button>
             <br />
             <div className='h1'>
               Add content
