@@ -2,6 +2,8 @@ import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import { BrowserRouter } from "react-router-dom";
 import App from '../App';
 import AllUsers from '../Pages/AllUsers';
+jest.mock('../Helpers/getAllUsers');
+import getAllUsers from '../Helpers/getAllUsers';
 
 describe('test all Users view', () => {
   test('renders without crashing', () => {
@@ -26,16 +28,7 @@ describe('test all Users view', () => {
   });
 
   test('adding a user', async () => {
-    const fakeApi = [{email:"testemail@test.com", password:"12345678", role:"admin", date_created:"2021-09-02"}]
-
-    const fetchSpy = jest.spyOn(window, 'fetch').mockImplementation(() => {
-      const fetchResponse = {
-        ok: true,
-        json: () => Promise.resolve(fakeApi),
-        status: 200
-      };
-      return Promise.resolve(fetchResponse);
-    })
+    getAllUsers.mockImplementation(() => [{email:"testemail@test.com", password:"12345678", role:"admin", date_created:"2021-09-02"}])
 
     const {getByTestId} = render(<AllUsers/>, { wrapper: BrowserRouter })
     const user = getByTestId('user')
@@ -46,16 +39,7 @@ describe('test all Users view', () => {
   })
 
   test('deleting user', async () => {
-    const fakeApi = [{email:"testemail@test.com", password:"12345678", role:"admin", date_created:"2021-09-02"}]
-    
-    const fetchSpy = jest.spyOn(window, 'fetch').mockImplementation(() => {
-      const fetchResponse = {
-        ok: true,
-        json: () => Promise.resolve(fakeApi),
-        status: 200
-      };
-      return Promise.resolve(fetchResponse);
-    })
+    getAllUsers.mockImplementation(() => [{email:"testemail@test.com", password:"12345678", role:"admin", date_created:"2021-09-02"}])
 
     const {getByTestId} = render(<AllUsers/>, { wrapper: BrowserRouter })
     const user = getByTestId('user')

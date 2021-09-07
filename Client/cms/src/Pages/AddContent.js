@@ -1,76 +1,65 @@
 import React, { useState, useEffect } from 'react';
-import Footer from '../components/Footer.js'
+import Footer from './Footer.js'
+import getAllContent from '../Helpers/getAllContent'
+import getContentById from '../Helpers/getContentById'
+import deleteContent from '../Helpers/deleteContent'
+import postContent from '../Helpers/postContent'
 
 const AddContent = () => {
   const [list, setList] = useState([])
-  const [counter, setCounter] = useState(1)
+  const [counter, setCounter] = useState(0)
   const [title, setTitle] = useState(null)
   const [content, setContent] = useState(null)
   const [currentContent, setCurrentContent] = useState(null)
 
   useEffect(() => {
     async function setContentList() {
-      const content = await retrieveContent()
-      const ids = await contentIds()
-      setList(content[0])
-      setCurrentContent(ids[0])
+      const content = await getAllContent() === undefined ? [] : await getAllContent()
+      const ids = await getContentIds()
+      await setList(content[0])
+      await setCurrentContent(ids[0])
     }
 
     setContentList()
   }, []);
 
-  async function retrieveContent() {
-    try {
-      const newResponse = await fetch('/content/')
-      const content = await newResponse.json()
-      return content === undefined || content.length === 0 ? 0 : content
-    } catch (err) {
-      console.error(err.message);
-    }
-  }
-
-  async function contentIds() {
-    const allContent = await retrieveContent()
+  async function getContentIds() {
+    const allContent = await getAllContent() === undefined ? [] : await getAllContent()
     const sortedIds = allContent.map(content => content.content_id).sort((a,b)=> a-b)
     return sortedIds
   }
 
   async function contentCounter(direction) {
-    const ids = await contentIds()
+    const ids = await getContentIds()
     if(direction === "next" && counter <= (ids.length-2)) setCounter(counter + 1)
     if(direction === "previous" && counter > 0) setCounter(counter - 1)
   }
 
   async function moveContent(direction) {
-    const ids = await contentIds()
-    contentCounter(direction)
-    const newResponse = await fetch('/content/'+[ids[counter]])
-    const newData = await newResponse.json()
-    setList(newData)
+    const ids = await getContentIds()
+    await contentCounter(direction)
+    const currentContentId = ids[counter]
+    const updatedContent = await getContentById(currentContentId)
+    await setList(updatedContent)
   }
 
-  async function deleteContent() {
-    const deleteResponse = await fetch('/content/'+currentContent,{
-      method:'DELETE',
-      header:{'Accept':'application/json', 'Content-Type':'application/json'}
-    })
+  async function removeContent() {
+    const ids = await getContentIds()
+    const currentContentId = ids[counter]
+    await deleteContent(currentContentId)
     await updateContentState()
   }
 
   async function postNewContent() {
-    const postContent = await fetch('/content/add',{
-      method:'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({title: title, content: content, date_created: 'NOW()'})
-    })
-    updateContentState()
+    await postContent(title, content)
+    await updateContentState()
   }
 
   async function updateContentState() {
-    const ids = await contentIds()
-    const newResponse = await fetch('/content/'+[ids[counter]])
-    const newData = await newResponse.json()
-    setList(newData)
+    const ids = await getContentIds()
+    const currentContentId = ids[counter]
+    const updatedContent = await getContentById(currentContentId)
+    await setList(updatedContent)
   }
 
   const mySubmitHandler = (event) => {
@@ -87,45 +76,51 @@ const AddContent = () => {
   }
 
     return (
-      <div className='Header'> Content View
-        <div className='body-text' data-testid='info'>
+      <div className="h1"> Content View
+        <div className='lead' data-testid='header-title'>
           Title: {list === undefined || list.length === 0 ? "-" : list.title}
           <br/>
+          <div className='lead' data-testid='header-body'>
           Content: {list === undefined || list.length === 0 ? "-" : list.content}
           <br/>
-          Date Created: {list === undefined || list.length === 0 ? "-" : list.date_created.toString().slice(0, 10)}
+          <div className='lead' data-testid='header-date'>
+          Date Created: {list === undefined || list.length === 0 ? "-" : list.date_created}
           <br/>
-          <button className="add-button" onClick={() => moveContent("previous")}>
-            Previous Content </button>
-          <button className="add-button" onClick={() => moveContent("next")}>
-            Next Content </button>
-          <button className="add-button" onClick={() => deleteContent()}>
-            Delete Content </button>
-            <div className='body-text'>
+          <button className="btn btn-outline-dark" data-testid='previous-button' onClick={() => moveContent("previous")}>
+            Previous Content</button>
+          <button className="btn btn-outline-dark" data-testid='next-button' onClick={() => moveContent("next")}>
+            Next Content</button>
+          <button className="btn btn-outline-dark" data-testid='delete-button' onClick={() => removeContent()}>
+            Delete Content</button>
+            <br />
+            <div className='h1'>
               Add content
               <form onSubmit={mySubmitHandler}>
-                <p>Enter Content Title:</p>
+                <p className='lead'>Enter Content Title:</p>
                 <textarea
+                  class="mb-0"
                   name='title'
                   data-testid="title"
                   onChange={myChangeHandler}
                   style={{width: "250px"}}
                 />
-                <p>Enter Content Body:</p>
+                <p className='lead'>Enter Content Body:</p>
                 <textarea
+                  class="mb-0"
                   name='content'
                   data-testid="body"
                   onChange={myChangeHandler}
                   style={{width: "250px", height: "80px"}}
                 />
-                <br/>
-                <br/>
+                <br />
                 <input
                   type='submit'
+                  className="btn btn-outline-dark"
                   data-testid="Submit"
-                  className="add-button"
                 />
-              </form>
+               </form>
+               </div>
+              </div>
             </div>
         </div>
         <Footer/>

@@ -5,9 +5,10 @@ A React App to manage content and users
 - Express used for the back end APIs
 - Postgres for the database
   - Postgres extension pgcrypto for encryption
+- Jest to test back end
 - React for the front end (create-react-app)
-- Jest/React Testing Library used for testing
-- Bootstrap used for styling
+- Jest/React Testing Library for testing
+- Bootstrap for styling
 
 ### To run the CMS
 1. Clone the Git repo to your local directory
@@ -28,6 +29,7 @@ All files    |   91.78 |    95.45 |     100 |   91.78 |
  index.js    |   91.18 |      100 |     100 |   91.18 | 20,32,75,89,101,144
  
 - React Front end coverage
+
 File            | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s
 ----------------|---------|----------|---------|---------|---------------------------------
 All files       |   48.19 |    41.94 |   50.94 |   52.29 | 

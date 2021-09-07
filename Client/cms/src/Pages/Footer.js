@@ -5,7 +5,7 @@ import {  } from "react-router-dom"
 const Footer = ({props}) => {
   return (
     <div>
-      <Link to="/"><button onClick={props} className='add-button' alt="home-icon">Home</button>
+      <Link to="/"><button onClick={props} className="btn btn-outline-dark" alt="home-icon">Home</button>
       </Link>
     </div>
   )

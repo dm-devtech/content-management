@@ -1,59 +1,42 @@
 import React, { useState, useEffect } from 'react';
-import Footer from '../components/Footer.js'
+import Footer from './Footer.js'
+import getAllUsers from '../Helpers/getAllUsers'
+import deleteUser from '../Helpers/deleteUser'
 
 const AllUsers = () => {
   const [list, setList] = useState("")
 
   useEffect(() => {
     async function setUserList() {
-      const content = await getUserData()
+      const content = await getAllUsers()
       setList(content)
     }
 
     setUserList()
   }, []);
 
-  async function getUserData() {
-    try {
-      const url = '/users/'
-      const response = await fetch(url)
-      const data = await response.json()
-      return data
-    } catch (err) {
-        console.error(err.message);
-    }
-  }
-
-  async function deleteUser(id) {
-    try {
-      const url = '/users/'
-      const response = await fetch(url+id,{
-        method:'DELETE',
-        header:{'Accept':'application/json', 'Content-Type':'application/json'}
-      })
-      const newResponse = await fetch(url)
-      const newData = await newResponse.json()
-      setList(newData)
-    } catch (err) {
-        console.error(err.message);
-    }
+  async function removeUser(id) {
+    await deleteUser(id) 
+    const updatedUsers = await getAllUsers()
+    setList(updatedUsers)
   }
 
     return (
-      <div className='Header'>
+      <div className='h1'>
         User View
         <br/>
-          <div className='body-text' data-testid="user" >
-        {list === undefined || list.length === 0 ? "No Users" :
+          <div className='lead' data-testid="user" >
+        {list === undefined || list.length === 0 || list === 0 ? "No Users" :
         <ul>
         {list.map(user => (
-          <li key={user.user_id}>
+          <li key={user.user_id} >
             User email: {user.email}
             <br/>
              User Role: {user.role}
              <br/>
               Date Created: {user.date_created.toString().slice(0,10)}
-              <button data-testid="delete-button" className="add-button" onClick={() => deleteUser(user.user_id)}>
+              <br />
+              <button data-testid="delete-button" className="btn btn-outline-dark" onClick={() => removeUser(user.user_id)}>
               Delete User </button>
             </li>
           ))}

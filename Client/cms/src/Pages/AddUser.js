@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import Footer from '../components/Footer.js'
+import Footer from './Footer.js'
+import getAllUsers from '../Helpers/getAllUsers'
+import getUserById from '../Helpers/getUserById'
+import deleteUser from '../Helpers/deleteUser'
+import postUser from '../Helpers/postUser'
 
 const AddUser = () => {
   const [list, setList] = useState([])
-  const [counter, setCounter] = useState(1)
+  const [counter, setCounter] = useState(0)
   const [email, setEmail] = useState(null)
   const [password, setPassword] = useState(null)
   const [role, setRole] = useState(null)
@@ -11,8 +15,8 @@ const AddUser = () => {
 
   useEffect(() => {
     async function setUserList() {
-      const users = await retrieveUsers()
-      const ids = await userIds()
+      const users = await getAllUsers() === undefined ? [] : await getAllUsers()
+      const ids = await getUserIds()
       setList(users[0])
       setCurrentUser(ids[0])
     }
@@ -20,58 +24,43 @@ const AddUser = () => {
     setUserList()
   }, []);
 
-  async function retrieveUsers() {
-    try {
-      const newResponse = await fetch('/users/')
-      const users = await newResponse.json()
-      return users
-    } catch (err) {
-      console.error(err.message);
-    }
-  }
-
-  async function userIds() {
-    const allUsers = await retrieveUsers()
+  async function getUserIds() {
+    const allUsers = await getAllUsers() === undefined ? [] : await getAllUsers()
     const sortedIds = allUsers.map(user => user.user_id).sort((a,b)=> a-b)
     return sortedIds
   }
 
   async function userCounter(direction) {
-    const ids = await userIds()
+    const ids = await getUserIds()
     if(direction === "next" && counter <= (ids.length-2)) await setCounter(counter + 1)
     if(direction === "previous" && counter > 0) await setCounter(counter - 1)
   }
 
   async function switchUser(direction) {
-    const ids = await userIds()
-    userCounter(direction)
-    const newResponse = await fetch('/users/'+[ids[counter]])
-    const newData = await newResponse.json()
-    setList(newData)
+    const ids = await getUserIds()
+    await userCounter(direction)
+    const currentUserId = ids[counter]
+    const updatedUser = await getUserById(currentUserId)
+    setList(updatedUser)
   }
 
-  async function deleteUser() {
-    const deleteResponse = await fetch('/users/'+currentUser,{
-      method:'DELETE',
-      header:{'Accept':'application/json', 'Content-Type':'application/json'}
-    })
-    await updateUserState()
+  async function removeUser() {
+    const ids = await getUserIds()
+    const currentUserId = ids[counter]
+    await deleteUser(currentUserId)
+    await updateUsers()
   }
 
   async function addNewUser() {
-    const addUser = await fetch('/users/add',{
-      method:'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({email: email, password: password, role: role, date_created: 'NOW()'})
-    })
-    updateUserState()
+    await postUser(email, password, role)
+    await updateUsers()
   }
  
-  async function updateUserState() {
-    const ids = await userIds()
-    const newResponse = await fetch('/users/'+[ids[counter]])
-    const newData = await newResponse.json()
-    setList(newData)
+  async function updateUsers() {
+    const ids = await getUserIds()
+    const currentUserId = ids[counter]
+    const updatedUsers = await getUserById(currentUserId)
+    await setList(updatedUsers)
   }
 
   const mySubmitHandler = (event) => {
@@ -89,52 +78,61 @@ const AddUser = () => {
   }
 
     return (
-      <div className='Header'> User View
-        <div className='body-text'>
+      <div className='h1'> User View
+        <div className='lead'>
+         <div className='lead' data-testid='user-email'>
           User Email: {list === undefined || list.length === 0 ? "-" : list.email}
           <br/>
+          <div className='lead' data-testid='user-role'>
           User Role: {list === undefined || list.length === 0 ? "-" : list.role}
           <br/>
-          Date Created: {list === undefined || list.length === 0 ? "-" : list.date_created.toString().slice(0, 10)}
+          <div className='lead' data-testid='user-date'>
+          Date Created: {list === undefined || list.length === 0 ? "-" : list.date_created}
           <br/>
-          <button className="add-button" onClick={() => switchUser("previous")}>
+          <button className="btn btn-outline-dark" data-testid='previous-user' onClick={() => switchUser("previous")}>
             Previous User </button>
-          <button className="add-button" onClick={() => switchUser("next")}>
+          <button className="btn btn-outline-dark" data-testid='next-user' onClick={() => switchUser("next")}>
             Next User </button>
-          <button className="add-button" onClick={() => deleteUser()}>
+          <button className="btn btn-outline-dark" data-testid='delete-user' onClick={() => removeUser()}>
             Delete User </button>
-            <div className='body-text'>
+            <div className='h1'>
               Add User
               <form onSubmit={mySubmitHandler}>
-                <p>Enter User Email:</p>
+                <p className='lead'>Enter User Email:</p>
                   <textarea
+                    class="mb-0"
                     name='email'
                     onChange={myChangeHandler}
-                    style={{width: "200px"}}
+                    style={{width: "220px", height: "35px"}}
                   />
-                <p>Enter User Password:</p>
-                  <input
+                <p className='lead'>Enter User Password:</p>
+                  <textarea
+                    class="mb-0"
                     name='password'
                     type='password'
                     onChange={myChangeHandler}
-                    style={{width: "200px"}}
+                    style={{width: "220px", height: "35px"}}
                   />
-                <p>Enter User Role:</p>
+                <p className='lead'>Enter User Role:</p>
                   <textarea
+                    class="mb-0"
                     name='role'
                     onChange={myChangeHandler}
-                    style={{width: "200px"}}
+                    style={{width: "220px", height: "35px"}}
                   />
                 <br/>
                   <input
                     type='submit'
                     data-testid='Submit'
-                    className='add-button'
+                    className="btn btn-outline-dark"
                   />
               </form>
             </div>
+            </div>
+            </div>
         </div>
         <Footer />
+      </div>
       </div>
     );
   }
