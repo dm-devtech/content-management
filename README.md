@@ -34,6 +34,13 @@ File                | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s
 --------------------|---------|----------|---------|---------|-------------------
 All files           |   67.76 |    69.05 |   75.44 |   71.76 | 
 
+### Screenshots
+![home](Screenshots/home.JPG)
+![add-content](Screenshots/add-content.JPG)
+![content-view](Screenshots/content-view.JPG)
+![add-users](Screenshots/add-users.JPG)
+![user-view](Screenshots/user-view.JPG)
+
 ### Project Summary
 #### Functionality included:
 - Adding and deleting users and content.
