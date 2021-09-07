@@ -19,7 +19,7 @@ describe('<AddContent />', () => {
 
   test('check page title exists', () => {
     const {getByText} = render(<AddUser/>, { wrapper: BrowserRouter })
-    expect(getByText("User View")).toBeInTheDocument();
+    expect(getByText("Add User")).toBeInTheDocument();
   });
 
   test('Home button exists', () => {

@@ -36,9 +36,9 @@ All files           |   67.76 |    69.05 |   75.44 |   71.76 |
 
 ### Screenshots
 ![home](Screenshots/home.JPG)
-![add-content](Screenshots/add-content.JPG)
+![addnewcontent](Screenshots/addnewcontent.JPG)
 ![content-view](Screenshots/content-view.JPG)
-![add-users](Screenshots/add-users.JPG)
+![addnewusers](Screenshots/addnewusers.JPG)
 ![user-view](Screenshots/user-view.JPG)
 
 ### Project Summary

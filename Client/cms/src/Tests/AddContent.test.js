@@ -18,7 +18,7 @@ describe('<AddContent />', () => {
 
   test('check page title exists', () => {
     const {getByText} = render(<AddContent/>, { wrapper: BrowserRouter })
-    expect(getByText("Content View")).toBeInTheDocument();
+    expect(getByText("Add Content")).toBeInTheDocument();
   });
 
   test('Home button reroutes to home', () => {

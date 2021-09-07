@@ -76,7 +76,7 @@ const AddContent = () => {
   }
 
     return (
-      <div className="h1"> Content View
+      <div className="h1"> Add Content
         <div className='lead' data-testid='header-title'>
           Title: {list === undefined || list.length === 0 ? "-" : list.title}
           <br/>
