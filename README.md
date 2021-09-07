@@ -18,7 +18,7 @@ A React App to manage content and users
 5. Create .env file with variables PG_USER, PG_PASSWORD (use the credentials for the postgres user set up in step 4), PORT (use pg default port) and NODE_ENV=production
 6. To run the app go to the parent directory and run ```npm start```
 7. Go to localhost:3002 in your web browser
-  
+
 ##### Tests
 - Express API back end test coverage:
 
