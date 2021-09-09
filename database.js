@@ -1,7 +1,7 @@
-require('dotenv').config()
+require("dotenv").config();
 const Pool = require("pg").Pool;
 
-const isProduction = process.env.NODE_ENV === 'production'
+const isProduction = process.env.NODE_ENV === "production";
 
 const pool = new Pool({
   user: process.env.PG_USER,
@@ -9,6 +9,6 @@ const pool = new Pool({
   database: isProduction ? "cms_db" : "cms_db_test",
   host: "localhost",
   port: 5432,
-})
+});
 
 module.exports = pool;

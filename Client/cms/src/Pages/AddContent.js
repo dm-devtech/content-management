@@ -1,132 +1,155 @@
-import React, { useState, useEffect } from 'react';
-import Footer from './Footer.js'
-import getAllContent from '../Helpers/getAllContent'
-import getContentById from '../Helpers/getContentById'
-import deleteContent from '../Helpers/deleteContent'
-import postContent from '../Helpers/postContent'
+import React, { useState, useEffect } from "react";
+import Footer from "./Footer.js";
+import getAllContent from "../Helpers/getAllContent";
+import getContentById from "../Helpers/getContentById";
+import deleteContent from "../Helpers/deleteContent";
+import postContent from "../Helpers/postContent";
 
 const AddContent = () => {
-  const [list, setList] = useState([])
-  const [counter, setCounter] = useState(0)
-  const [title, setTitle] = useState(null)
-  const [content, setContent] = useState(null)
-  const [currentContent, setCurrentContent] = useState(null)
+  const [list, setList] = useState([]);
+  const [counter, setCounter] = useState(0);
+  const [title, setTitle] = useState(null);
+  const [content, setContent] = useState(null);
+  const [currentContent, setCurrentContent] = useState(null);
 
   useEffect(() => {
     async function setContentList() {
-      const content = await getAllContent() === undefined ? [] : await getAllContent()
-      const ids = await getContentIds()
-      await setList(content[0])
-      await setCurrentContent(ids[0])
+      const content =
+        (await getAllContent()) === undefined ? [] : await getAllContent();
+      const ids = await getContentIds();
+      await setList(content[0]);
+      await setCurrentContent(ids[0]);
     }
 
-    setContentList()
+    setContentList();
   }, []);
 
   async function getContentIds() {
-    const allContent = await getAllContent() === undefined ? [] : await getAllContent()
-    const sortedIds = allContent.map(content => content.content_id).sort((a,b)=> a-b)
-    return sortedIds
+    const allContent =
+      (await getAllContent()) === undefined ? [] : await getAllContent();
+    const sortedIds = allContent
+      .map((content) => content.content_id)
+      .sort((a, b) => a - b);
+    return sortedIds;
   }
 
   async function contentCounter(direction) {
-    const ids = await getContentIds()
-    if(direction === "next" && counter <= (ids.length-2)) setCounter(counter + 1)
-    if(direction === "previous" && counter > 0) setCounter(counter - 1)
+    const ids = await getContentIds();
+    if (direction === "next" && counter <= ids.length - 2)
+      setCounter(counter + 1);
+    if (direction === "previous" && counter > 0) setCounter(counter - 1);
   }
 
   async function moveContent(direction) {
-    const ids = await getContentIds()
-    await contentCounter(direction)
-    const currentContentId = ids[counter]
-    const updatedContent = await getContentById(currentContentId)
-    await setList(updatedContent)
+    const ids = await getContentIds();
+    await contentCounter(direction);
+    const currentContentId = ids[counter];
+    const updatedContent = await getContentById(currentContentId);
+    await setList(updatedContent);
   }
 
   async function removeContent() {
-    const ids = await getContentIds()
-    const currentContentId = ids[counter]
-    await deleteContent(currentContentId)
-    await updateContentState()
+    const ids = await getContentIds();
+    const currentContentId = ids[counter];
+    await deleteContent(currentContentId);
+    await updateContentState();
   }
 
   async function postNewContent() {
-    await postContent(title, content)
-    await updateContentState()
+    await postContent(title, content);
+    await updateContentState();
   }
 
   async function updateContentState() {
-    const ids = await getContentIds()
-    const currentContentId = ids[counter]
-    const updatedContent = await getContentById(currentContentId)
-    await setList(updatedContent)
+    const ids = await getContentIds();
+    const currentContentId = ids[counter];
+    const updatedContent = await getContentById(currentContentId);
+    await setList(updatedContent);
   }
 
   const mySubmitHandler = (event) => {
     event.preventDefault();
     alert("You are submitting " + title);
-    postNewContent()
-  }
+    postNewContent();
+  };
 
   const myChangeHandler = (event) => {
     let header = event.target.name;
     let body = event.target.value;
-    if(header === 'title') setTitle(body)
-    if(header === 'content') setContent(body)
-  }
+    if (header === "title") setTitle(body);
+    if (header === "content") setContent(body);
+  };
 
-    return (
-      <div className="h1"> Add Content
-        <div className='lead' data-testid='header-title'>
-          Title: {list === undefined || list.length === 0 ? "-" : list.title}
-          <br/>
-          <div className='lead' data-testid='header-body'>
-          Content: {list === undefined || list.length === 0 ? "-" : list.content}
-          <br/>
-          <div className='lead' data-testid='header-date'>
-          Date Created: {list === undefined || list.length === 0 ? "-" : list.date_created}
-          <br/>
-          <button className="btn btn-outline-dark" data-testid='previous-button' onClick={() => moveContent("previous")}>
-            Previous Content</button>
-          <button className="btn btn-outline-dark" data-testid='next-button' onClick={() => moveContent("next")}>
-            Next Content</button>
-          <button className="btn btn-outline-dark" data-testid='delete-button' onClick={() => removeContent()}>
-            Delete Content</button>
+  return (
+    <div className="h1">
+      {" "}
+      Add Content
+      <div className="lead" data-testid="header-title">
+        Title: {list === undefined || list.length === 0 ? "-" : list.title}
+        <br />
+        <div className="lead" data-testid="header-body">
+          Content:{" "}
+          {list === undefined || list.length === 0 ? "-" : list.content}
+          <br />
+          <div className="lead" data-testid="header-date">
+            Date Created:{" "}
+            {list === undefined || list.length === 0 ? "-" : list.date_created}
             <br />
-            <div className='h1'>
+            <button
+              className="btn btn-outline-dark"
+              data-testid="previous-button"
+              onClick={() => moveContent("previous")}
+            >
+              Previous Content
+            </button>
+            <button
+              className="btn btn-outline-dark"
+              data-testid="next-button"
+              onClick={() => moveContent("next")}
+            >
+              Next Content
+            </button>
+            <button
+              className="btn btn-outline-dark"
+              data-testid="delete-button"
+              onClick={() => removeContent()}
+            >
+              Delete Content
+            </button>
+            <br />
+            <div className="h1">
               Add content
               <form onSubmit={mySubmitHandler}>
-                <p className='lead'>Enter Content Title:</p>
+                <p className="lead">Enter Content Title:</p>
                 <textarea
                   class="mb-0"
-                  name='title'
+                  name="title"
                   data-testid="title"
                   onChange={myChangeHandler}
-                  style={{width: "250px"}}
+                  style={{ width: "250px" }}
                 />
-                <p className='lead'>Enter Content Body:</p>
+                <p className="lead">Enter Content Body:</p>
                 <textarea
                   class="mb-0"
-                  name='content'
+                  name="content"
                   data-testid="body"
                   onChange={myChangeHandler}
-                  style={{width: "250px", height: "80px"}}
+                  style={{ width: "250px", height: "80px" }}
                 />
                 <br />
                 <input
-                  type='submit'
+                  type="submit"
                   className="btn btn-outline-dark"
                   data-testid="Submit"
                 />
-               </form>
-               </div>
-              </div>
+              </form>
             </div>
+          </div>
         </div>
-        <Footer/>
       </div>
-    );
-  }
-
+      <Footer />
+    </div>
+  );
+};
 
 export default AddContent;
