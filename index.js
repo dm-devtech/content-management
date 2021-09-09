@@ -7,10 +7,6 @@ require("dotenv").config();
 app.use(express.static(path.join(__dirname, "build")));
 app.use(express.json());
 
-// ROUTES
-// Course content
-
-// to get all content
 app.get("/content/", async (req, res) => {
   try {
     const allContent = await pool.query("SELECT * FROM posts");
@@ -21,7 +17,6 @@ app.get("/content/", async (req, res) => {
   }
 });
 
-// to get one piece of content
 app.get("/content/:id", async (req, res) => {
   const { id } = req.params;
   try {
@@ -36,7 +31,6 @@ app.get("/content/:id", async (req, res) => {
   }
 });
 
-// to create one piece of content
 app.post("/content/add", async (req, res) => {
   try {
     const { title, content, date_created } = req.body;
@@ -55,7 +49,6 @@ app.post("/content/add", async (req, res) => {
   }
 });
 
-// to update a piece of content
 app.put("/content/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -75,7 +68,6 @@ app.put("/content/:id", async (req, res) => {
   }
 });
 
-// to delete a piece of content
 app.delete("/content/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -90,10 +82,6 @@ app.delete("/content/:id", async (req, res) => {
   }
 });
 
-// ROUTES
-// Users
-
-// to get all users
 app.get("/users/", async (req, res) => {
   try {
     const allUsers = await pool.query("SELECT * FROM users");
@@ -104,7 +92,6 @@ app.get("/users/", async (req, res) => {
   }
 });
 
-// to get one user
 app.get("/users/:id", async (req, res) => {
   const { id } = req.params;
   try {
@@ -118,7 +105,6 @@ app.get("/users/:id", async (req, res) => {
   }
 });
 
-// to create one user
 app.post("/users/add", async (req, res) => {
   try {
     const { email, password, role, date_created } = req.body;
@@ -137,7 +123,6 @@ app.post("/users/add", async (req, res) => {
   }
 });
 
-// to update a user
 app.put("/users/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -157,7 +142,6 @@ app.put("/users/:id", async (req, res) => {
   }
 });
 
-// to delete a user
 app.delete("/users/:id", async (req, res) => {
   try {
     const { id } = req.params;
