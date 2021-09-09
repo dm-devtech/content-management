@@ -78,7 +78,7 @@ const AddUser = () => {
   }
 
     return (
-      <div className='h1'> Add User
+      <div className='h1' data-testid='header'> Add User
         <div className='lead'>
          <div className='lead' data-testid='user-email'>
           User Email: {list === undefined || list.length === 0 ? "-" : list.email}

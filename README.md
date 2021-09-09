@@ -32,7 +32,7 @@ All files    |   91.78 |    95.45 |     100 |   91.78 |
 
 File                | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
 --------------------|---------|----------|---------|---------|-------------------
-All files           |   67.76 |    69.05 |   75.44 |   71.76 | 
+All files           |   71.04 |    69.05 |   78.95 |   75.29 | 
 
 ### Screenshots
 ![home](Screenshots/home.JPG)
@@ -50,6 +50,3 @@ All files           |   67.76 |    69.05 |   75.44 |   71.76 |
 - CSS styling.
 - Edge cases considered e.g. app continues when no data in database, broken number sequence of record ids due to data deletion guarded against when cycling through records, input form text box size variability using text area.   
 - Styled with a focus on mobile view as shown in screenshots above.  
-
-#### Areas for improvement:
-- Fix tests for front end

@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import { BrowserRouter } from "react-router-dom";
-import Footer from '../components/Footer';
+import Footer from '../Pages/Footer';
 
 describe('Testing <Footer />', () => {
   test('Home button when clicked is called', () => {
