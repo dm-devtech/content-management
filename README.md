@@ -1,6 +1,19 @@
 ## Content Management System
 A React App to manage content and users
 
+### To run the CMS
+1. Clone the Git repo to your local directory
+2. Move to the root directory and run ```npm install```
+3. Ensure postgres is installed, then create a postgres user with database creation permissions.
+4. Create the databases, extensions and tables as per the instructions [here](db-schema.sql)
+5. Create .env file with variables 
+  - PG_USER
+  - PG_PASSWORD (use the credentials for the postgres user set up in step 4) 
+  - PORT (use pg default port)
+  - NODE_ENV=production
+6. To run the app go to the parent directory and run ```npm start```
+7. Go to localhost:3002 in your web browser
+
 ### Tech used:
 - Express used for the back end APIs
 - Postgres for the database
@@ -10,23 +23,13 @@ A React App to manage content and users
 - Jest/React Testing Library for testing
 - Bootstrap for styling
 
-### To run the CMS
-1. Clone the Git repo to your local directory
-2. Move to the root directory and run ```npm install```
-3. Ensure postgres is installed, then create a postgres user with database creation permissions.
-4. Create the databases, extensions and tables as per the instructions [here](db-schema.sql)
-5. Create .env file with variables PG_USER, PG_PASSWORD (use the credentials for the postgres user set up in step 4), PORT (use pg default port) and NODE_ENV=production
-6. To run the app go to the parent directory and run ```npm start```
-7. Go to localhost:3002 in your web browser
-
 ##### Tests
 - Express API back end test coverage:
 
 File         | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s
 -------------|---------|----------|---------|---------|---------------------
 All files    |   91.78 |    95.45 |     100 |   91.78 |
- database.js |     100 |       50 |     100 |     100 | 9
- index.js    |   91.18 |      100 |     100 |   91.18 | 20,32,75,89,101,144
+
  
 - React Front end coverage
 
