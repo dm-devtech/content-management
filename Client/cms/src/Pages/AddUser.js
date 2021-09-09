@@ -16,7 +16,7 @@ const AddUser = () => {
   useEffect(() => {
     async function setUserList() {
       const users =
-        (await getAllUsers()) === undefined ? [] : await getAllUsers();
+        !(await getAllUsers()) ? [] : await getAllUsers();
       const ids = await getUserIds();
       setList(users[0]);
       setCurrentUser(ids[0]);
@@ -27,7 +27,7 @@ const AddUser = () => {
 
   async function getUserIds() {
     const allUsers =
-      (await getAllUsers()) === undefined ? [] : await getAllUsers();
+      !(await getAllUsers()) ? [] : await getAllUsers();
     const sortedIds = allUsers
       .map((user) => user.user_id)
       .sort((a, b) => a - b);
@@ -89,17 +89,15 @@ const AddUser = () => {
       <div className="lead">
         <div className="lead" data-testid="user-email">
           User Email:{" "}
-          {list === undefined || list.length === 0 ? "-" : list.email}
+          {!list ? "-" : list.email}
           <br />
           <div className="lead" data-testid="user-role">
             User Role:{" "}
-            {list === undefined || list.length === 0 ? "-" : list.role}
+            {!list ? "-" : list.role}
             <br />
             <div className="lead" data-testid="user-date">
               Date Created:{" "}
-              {list === undefined || list.length === 0
-                ? "-"
-                : list.date_created}
+              {!list ? "-" : list.date_created}
               <br />
               <button
                 className="btn btn-outline-dark"

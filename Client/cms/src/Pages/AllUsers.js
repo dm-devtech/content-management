@@ -26,9 +26,7 @@ const AllUsers = () => {
       User View
       <br />
       <div className="lead" data-testid="user">
-        {list === undefined || list.length === 0 || list === 0 ? (
-          "No Users"
-        ) : (
+        {!list ? ("No Users") : (
           <ul>
             {list.map((user) => (
               <li key={user.user_id}>

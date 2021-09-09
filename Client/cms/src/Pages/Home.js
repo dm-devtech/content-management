@@ -17,7 +17,6 @@ const LinkButton = ({ location, handleClick, label, className, children }) => (
 const Home = ({ props }) => (
   <div>
     <h1 class="h1">Content Manager</h1>
-    {/* Link to List.js */}
     <div>
       <LinkButton
         className="btn btn-outline-dark"

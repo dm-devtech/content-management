@@ -18,7 +18,6 @@ const AllContent = () => {
   async function removeContent(id) {
     await deleteContent(id);
     const updatedContent = await getAllContent();
-    console.log("delete content then updated content:", updatedContent);
     setList(updatedContent);
   }
 
@@ -27,7 +26,7 @@ const AllContent = () => {
       Content View
       <br />
       <div className="lead" data-testid="content">
-        {list === undefined || list.length === 0 || list === 0 ? (
+        {!list? (
           "No Content"
         ) : (
           <ul>
@@ -37,7 +36,7 @@ const AllContent = () => {
                 <br />
                 Content: {content.content}
                 <br />
-                Date Created: {content.date_created}
+                Date Created: {content.date_created.toString().slice(0, 10)}
                 <br />
                 <button
                   className="btn btn-outline-dark"

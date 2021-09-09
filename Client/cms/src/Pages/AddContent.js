@@ -15,7 +15,7 @@ const AddContent = () => {
   useEffect(() => {
     async function setContentList() {
       const content =
-        (await getAllContent()) === undefined ? [] : await getAllContent();
+        !(await getAllContent()) ? [] : await getAllContent();
       const ids = await getContentIds();
       await setList(content[0]);
       await setCurrentContent(ids[0]);
@@ -26,7 +26,7 @@ const AddContent = () => {
 
   async function getContentIds() {
     const allContent =
-      (await getAllContent()) === undefined ? [] : await getAllContent();
+      !(await getAllContent()) ? [] : await getAllContent();
     const sortedIds = allContent
       .map((content) => content.content_id)
       .sort((a, b) => a - b);
@@ -85,15 +85,15 @@ const AddContent = () => {
       {" "}
       Add Content
       <div className="lead" data-testid="header-title">
-        Title: {list === undefined || list.length === 0 ? "-" : list.title}
+        Title: {!list ? "-" : list.title}
         <br />
         <div className="lead" data-testid="header-body">
           Content:{" "}
-          {list === undefined || list.length === 0 ? "-" : list.content}
+          {!list ? "-" : list.content}
           <br />
           <div className="lead" data-testid="header-date">
             Date Created:{" "}
-            {list === undefined || list.length === 0 ? "-" : list.date_created}
+            {!list ? "-" : list.date_created}
             <br />
             <button
               className="btn btn-outline-dark"
